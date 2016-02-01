@@ -26,6 +26,8 @@ db.once('open', function() {
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
 			}
+		}, function() {
+			console.log('oops');
 		});
 	}, function() {
 		console.log('done');
@@ -64,6 +66,7 @@ function checkDate() {
 	}, function(err, operationalHours) {
 		if(err) { 
 			console.log('checkDate error');
+			deferred.reject(err);
 		}
 		if(operationalHours) {
 			deferred.resolve(operationalHours);
@@ -79,6 +82,10 @@ function checkDate() {
 							openingTime: moment(day.openingTime).toDate(),
 							closingTime: moment(day.closingTime).toDate()
 						}, function(err, operationalHours) {
+							if(err) {
+								deferred.reject(err);
+								return;
+							}
 							if(moment().isSame(moment(operationalHours.date), 'day')) {
 								deferred.resolve(operationalHours);
 							}
@@ -106,12 +113,17 @@ function checkAndRecordWaitTimes() {
 				active: ride.active,
 				minutes: ride.waitTime,
 				date: new Date()
-			}, function() {
+			}, function(err) {
+				if(err) {
+					return deferred.reject();
+				}
 				deferred.resolve();
 			});
 		});
 		Q.all(promises).then(function() {
 			console.log('Wait times recorded');
+		}, function() {
+			console.log('There was a problem recording wait times');
 		});
 	});
 }
