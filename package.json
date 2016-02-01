@@ -1,0 +1,20 @@
+{
+  "name": "disney",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "lodash": "^4.1.0",
+    "moment": "^2.11.1",
+    "mongoose": "^4.3.7",
+    "mongoose-findorcreate": "^0.1.2",
+    "q": "^1.4.1",
+    "wdwjs": "^3.0.1"
+  }
+}
