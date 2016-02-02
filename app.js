@@ -7,8 +7,9 @@ var DisneyAPI = require("wdwjs")
 	, findOrCreate = require('mongoose-findorcreate')
 	, CronJob = require('cron').CronJob
 	, Q = require('q');
-	
+
 require('moment-range');
+require('moment-timezone');
 
 mongoose.connect(config.mongodb.url);
 db = mongoose.connection;
@@ -18,7 +19,7 @@ db.once('open', function() {
 	console.log('Start loggin Disneyland wait times...');
 	var job = new CronJob('00 */10 * * * *', function() {
 		console.log('Start checking');
-		console.log('Check time at:' + new moment().format('ddd, h:mmA'));
+		console.log('Check time at:' + new moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
 		checkDate().then(function(operationalHours) {
 			console.log('hours received');
 			var range = moment.range(moment(operationalHours.openingTime), moment(operationalHours.closingTime));
