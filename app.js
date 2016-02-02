@@ -14,17 +14,20 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 	console.log('Start loggin Disneyland wait times...');
 	var todaysJob;
-	var job = new CronJob('00 */10 * * * *', function() {
+	var job = new CronJob('00 * * * * *', function() {
 		console.log('Start checking');
-		console.log('Check time at:' + new moment().format('ddd, hA'));
+		console.log('Check time at:' + new moment().format('ddd, h:mmA'));
 		checkDate().then(function(operationalHours) {
+			console.log('hours received');
 			var openingHour = moment(operationalHours.openingTime).hours();
 			var closingHour = moment(operationalHours.closingTime).hours();
-			var currentHour = moment().hours();
+			var currentHour = moment().hour();
 			if((currentHour >= openingHour) && (currentHour <= closingHour)) {
 				console.log('Within park operating hours');
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
+			} else {
+				console.log('Park is closed: ' + openingHour + ' - ' + closingHour + '. It is currently ' + currentHour);
 			}
 		}, function() {
 			console.log('oops');
@@ -36,8 +39,6 @@ db.once('open', function() {
 });
 
 var WaitTimeSchema = new mongoose.Schema({
-	rideId: String,
-	rideName: String,
 	fastPass: Boolean,
 	active: Boolean,
 	minutes: Number,
@@ -46,6 +47,14 @@ var WaitTimeSchema = new mongoose.Schema({
 	date: Date
 });
 var WaitTime = mongoose.model('WaitTime', WaitTimeSchema);
+
+var RideSchema = new mongoose.Schema({
+	id: String,
+	name: String,
+	waitTimes: [ WaitTime.schema ]
+});
+RideSchema.plugin(findOrCreate);
+var Ride = mongoose.model('Ride', RideSchema);
 
 var OperationalHoursSchema = new mongoose.Schema({
 	date: Date,
@@ -103,21 +112,29 @@ function checkAndRecordWaitTimes() {
 			return console.error("Error fetching Magic Kingdom wait times: " + err);
 		}
 		var promises = [];
-		_.each(data, function(ride) {
+		_.each(data, function(rideData) {
 			var deferred = Q.defer();
 			promises.push(deferred.promise);
-			WaitTime.create({
-				rideId: ride.id,
-				rideName: ride.name,
-				fastPass: ride.fastPass,
-				active: ride.active,
-				minutes: ride.waitTime,
-				date: new Date()
-			}, function(err) {
+			Ride.findOrCreate({
+				id: rideData.id,
+				name: rideData.name
+			}, function(err, ride) {
 				if(err) {
-					return deferred.reject();
+					console.log(err);
+					deferred.reject();
 				}
-				deferred.resolve();
+				ride.waitTimes.push({
+					fastPass: rideData.fastPass,
+					active: rideData.active,
+					minutes: rideData.waitTime,
+					date: new Date()
+				});
+				ride.save(function(err) {
+					if(err) {
+						return deferred.reject();
+					}
+					deferred.resolve();
+				});
 			});
 		});
 		Q.all(promises).then(function() {
