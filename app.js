@@ -1,5 +1,6 @@
 var DisneyAPI = require("wdwjs")
 	, mongoose = require('mongoose')
+	, config = require('./config.js')
 	, MagicKingdom = new DisneyAPI.DisneylandMagicKingdom()
 	, _ = require('lodash')
 	, moment = require('moment')
@@ -7,7 +8,7 @@ var DisneyAPI = require("wdwjs")
 	, CronJob = require('cron').CronJob
 	, Q = require('q');
 
-mongoose.connect('mongodb://localhost/disneyland');
+mongoose.connect(config.mongodb.url);
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
