@@ -7,6 +7,8 @@ var DisneyAPI = require("wdwjs")
 	, findOrCreate = require('mongoose-findorcreate')
 	, CronJob = require('cron').CronJob
 	, Q = require('q');
+	
+require('moment-range');
 
 mongoose.connect(config.mongodb.url);
 db = mongoose.connection;
@@ -19,10 +21,8 @@ db.once('open', function() {
 		console.log('Check time at:' + new moment().format('ddd, h:mmA'));
 		checkDate().then(function(operationalHours) {
 			console.log('hours received');
-			var openingHour = moment(operationalHours.openingTime).hours();
-			var closingHour = moment(operationalHours.closingTime).hours();
-			var currentHour = moment().hour();
-			if((currentHour >= openingHour) && (currentHour <= closingHour)) {
+			var range = moment.range(moment(operationalHours.openingTime), moment(operationalHours.closingTime));
+			if(range.contains(moment())) {
 				console.log('Within park operating hours');
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
