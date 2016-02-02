@@ -19,7 +19,7 @@ db.once('open', function() {
 	console.log('Start loggin Disneyland wait times...');
 	var job = new CronJob('00 */10 * * * *', function() {
 		console.log('Start checking');
-		console.log('Check time at:' + new moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
+		console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
 		checkDate().then(function(operationalHours) {
 			console.log('hours received');
 			var range = moment.range(moment(operationalHours.openingTime), moment(operationalHours.closingTime));
@@ -28,6 +28,9 @@ db.once('open', function() {
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
 			} else {
+				var openingHour = moment(operationalHours.openingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
+				var closingHour = moment(operationalHours.closingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
+				var currentHour = moment().tz('America/Los_Angeles').format('ddd, h:mmA');
 				console.log('Park is closed: ' + openingHour + ' - ' + closingHour + '. It is currently ' + currentHour);
 			}
 		}, function() {
