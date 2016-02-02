@@ -14,7 +14,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
 	console.log('Start loggin Disneyland wait times...');
-	var todaysJob;
 	var job = new CronJob('00 */10 * * * *', function() {
 		console.log('Start checking');
 		console.log('Check time at:' + new moment().format('ddd, h:mmA'));
