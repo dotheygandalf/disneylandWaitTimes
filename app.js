@@ -6,7 +6,10 @@ var DisneyAPI = require("wdwjs")
 	, moment = require('moment')
 	, findOrCreate = require('mongoose-findorcreate')
 	, CronJob = require('cron').CronJob
-	, Q = require('q');
+	, Q = require('q')
+	, OperationalHours = require('./server/src/api/operationalHours/operationalHours.model')
+	, Ride = require('./server/src/api/ride/ride.model')
+	, WaitTime = require('./server/src/api/waitTime/waitTime.model');
 
 require('moment-range');
 require('moment-timezone');
@@ -44,32 +47,6 @@ function getData() {
 		console.log('oops');
 	});
 }
-
-var WaitTimeSchema = new mongoose.Schema({
-	fastPass: Boolean,
-	active: Boolean,
-	minutes: Number,
-	temperature: Number,
-	humidity: Number,
-	date: Date
-});
-var WaitTime = mongoose.model('WaitTime', WaitTimeSchema);
-
-var RideSchema = new mongoose.Schema({
-	id: String,
-	name: String,
-	waitTimes: [ WaitTime.schema ]
-});
-RideSchema.plugin(findOrCreate);
-var Ride = mongoose.model('Ride', RideSchema);
-
-var OperationalHoursSchema = new mongoose.Schema({
-	date: Date,
-	openingTime: Date,
-	closingTime: Date
-});
-OperationalHoursSchema.plugin(findOrCreate);
-var OperationalHours = mongoose.model('OperationalHours', OperationalHoursSchema);
 
 function checkDate() {
 	console.log('checking date');
