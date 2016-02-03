@@ -17,30 +17,33 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
 	console.log('Start loggin Disneyland wait times...');
-	var job = new CronJob('00 */10 * * * *', function() {
-		console.log('Start checking');
-		console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
-		checkDate().then(function(operationalHours) {
-			console.log('hours received');
-			var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
-			if(range.within(moment().tz('America/Los_Angeles'))) {
-				console.log('Within park operating hours');
-				console.log('Checking wait times...');
-				checkAndRecordWaitTimes();
-			} else {
-				var openingHour = moment(operationalHours.openingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
-				var closingHour = moment(operationalHours.closingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
-				var currentHour = moment().tz('America/Los_Angeles').format('ddd, h:mmA');
-				console.log('Park is closed: ' + openingHour + ' - ' + closingHour + '. It is currently ' + currentHour);
-			}
-		}, function() {
-			console.log('oops');
-		});
-	}, function() {
+	getData();
+	var job = new CronJob('00 */10 * * * *', getData, function() {
 		console.log('done');
 	}, true, 'America/Los_Angeles');
 	job.start();
 });
+
+function getData() {
+	console.log('Start checking');
+	console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
+	checkDate().then(function(operationalHours) {
+		console.log('hours received');
+		var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
+		if(range.contains(moment().tz('America/Los_Angeles'))) {
+			console.log('Within park operating hours');
+			console.log('Checking wait times...');
+			checkAndRecordWaitTimes();
+		} else {
+			var openingHour = moment(operationalHours.openingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
+			var closingHour = moment(operationalHours.closingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
+			var currentHour = moment().tz('America/Los_Angeles').format('ddd, h:mmA');
+			console.log('Park is closed: ' + openingHour + ' - ' + closingHour + '. It is currently ' + currentHour);
+		}
+	}, function() {
+		console.log('oops');
+	});
+}
 
 var WaitTimeSchema = new mongoose.Schema({
 	fastPass: Boolean,
