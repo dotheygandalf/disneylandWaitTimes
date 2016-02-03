@@ -23,7 +23,7 @@ db.once('open', function() {
 		checkDate().then(function(operationalHours) {
 			console.log('hours received');
 			var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
-			if(range.contains(moment().tz('America/Los_Angeles'))) {
+			if(range.within(moment().tz('America/Los_Angeles'))) {
 				console.log('Within park operating hours');
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
@@ -99,7 +99,7 @@ function checkDate() {
 								deferred.reject(err);
 								return;
 							}
-							if(moment().isSame(moment(operationalHours.date), 'day')) {
+							if(moment().tz('America/Los_Angeles').isSame(moment(operationalHours.date).tz('America/Los_Angeles'), 'day')) {
 								deferred.resolve(operationalHours);
 							}
 						});
