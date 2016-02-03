@@ -102,7 +102,7 @@ function checkDate() {
 								deferred.reject(err);
 								return;
 							}
-							if(moment().tz('America/Los_Angeles').isSame(moment(operationalHours.date).tz('America/Los_Angeles'), 'day')) {
+							if(moment().tz('America/Los_Angeles').dayOfYear() === moment(operationalHours.date).tz('America/Los_Angeles').dayOfYear()) {
 								deferred.resolve(operationalHours);
 							}
 						});
