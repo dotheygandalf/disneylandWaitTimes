@@ -22,8 +22,8 @@ db.once('open', function() {
 		console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
 		checkDate().then(function(operationalHours) {
 			console.log('hours received');
-			var range = moment.range(moment(operationalHours.openingTime), moment(operationalHours.closingTime));
-			if(range.contains(moment())) {
+			var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
+			if(range.contains(moment().tz('America/Los_Angeles'))) {
 				console.log('Within park operating hours');
 				console.log('Checking wait times...');
 				checkAndRecordWaitTimes();
