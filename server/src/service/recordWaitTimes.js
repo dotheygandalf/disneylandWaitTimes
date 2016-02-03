@@ -15,7 +15,6 @@ require('moment-timezone');
 
 exports.start = function() {
 	console.log('Start loggin Disneyland wait times...');
-	getData();
 	var job = new CronJob('00 */10 * * * *', getData, function() {
 		console.log('done');
 	}, true, 'America/Los_Angeles');
