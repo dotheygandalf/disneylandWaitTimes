@@ -51,7 +51,7 @@ function checkDate() {
 			'$lte': moment().tz('America/Los_Angeles').endOf('day').toDate()
 		}
 	}, function(err, operationalHours) {
-		if(err) { 
+		if(err) {
 			console.log('checkDate error');
 			deferred.reject(err);
 		}

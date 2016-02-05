@@ -28,16 +28,17 @@ angular.module('disneylandCharts', [
           tooltipHide: function(e){ console.log("tooltipHide"); }
       },
       xAxis: {
-          axisLabel: 'Time (ms)',
+          axisLabel: 'Time of Day',
           tickFormat: function(d) { return d3.time.format('%I:%M %p')(new Date(d)); }
       },
       yAxis: {
-          axisLabel: 'Minutes',
+          axisLabel: 'Wait Times (Minutes)',
           tickFormat: function(d){
               return d3.format('.02f')(d);
           },
           axisLabelDistance: -10
-      }
+      },
+      stroke: true
     }
   };
 
@@ -52,7 +53,7 @@ angular.module('disneylandCharts', [
         values: _.map(day.waitTimes, function(waitTime) {
           return {
             x: moment(waitTime.date).dayOfYear(1).toDate(),
-            y: waitTime.active ? waitTime.minutes : undefined
+            y: waitTime.minutes ? waitTime.minutes : null
           }
         })
       };
