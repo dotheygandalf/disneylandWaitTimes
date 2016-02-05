@@ -5,14 +5,16 @@ var mongoose = require('mongoose')
   , express = require('express')
   , config = require('./config')
   , recordWaitTimes = require('./server/src/service/recordWaitTimes')
-  , path = require('path');;
+  , path = require('path');
 
 mongoose.connect(config.mongodb.url);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
-	// recordWaitTimes.start();
+	if(app.get('env') === 'production') {
+		recordWaitTimes.start();
+	}
 });
 
 var app = express();
