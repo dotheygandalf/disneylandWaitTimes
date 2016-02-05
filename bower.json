@@ -1,0 +1,26 @@
+{
+  "name": "disney",
+  "description": "",
+  "main": "app.js",
+  "authors": [
+    "Jonathan Chang <prancingwithponies@live.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/dotheygandalf/disneylandWaitTimes",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-nvd3": "^1.0.5",
+    "d3": "^3.5.14",
+    "angular": "^1.4.9",
+    "angular-ui-router": "^0.2.17",
+    "lodash": "^4.2.1",
+    "moment": "^2.11.2"
+  }
+}

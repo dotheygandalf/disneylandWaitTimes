@@ -1,12 +1,13 @@
 'use strict';
 
-var errors = require('./components/errors');
+var errors = require('./components/errors')
+  , express = require('express');
 
 module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/v1/rides', require('./api/ride'));
-  
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);
