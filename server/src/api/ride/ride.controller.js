@@ -101,3 +101,7 @@ exports.show = function(req, res) {
     });
   }
 };
+
+function handleError(res, err, status) {
+  return res.send(status || 500, err);
+}
