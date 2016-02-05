@@ -29,7 +29,7 @@ angular.module('disneylandCharts', [
       },
       xAxis: {
           axisLabel: 'Time (ms)',
-          tickFormat: function(d) { return d3.time.format('%H:%M')(new Date(d)); }
+          tickFormat: function(d) { return d3.time.format('%I:%M %p')(new Date(d)); }
       },
       yAxis: {
           axisLabel: 'Minutes',
@@ -52,7 +52,7 @@ angular.module('disneylandCharts', [
         values: _.map(day.waitTimes, function(waitTime) {
           return {
             x: moment(waitTime.date).dayOfYear(1).toDate(),
-            y: waitTime.minutes
+            y: waitTime.active ? waitTime.minutes : undefined
           }
         })
       };
