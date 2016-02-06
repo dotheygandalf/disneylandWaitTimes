@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <style>
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -17,12 +18,29 @@
     <h1>Welcome to Disneyland</h1>
 
     <div ng-controller="dummy">
-      <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
-      <ul>
-        <li ng-repeat="ride in rides">
-          <a>{{ ride.name }}</a>
-        </li>
-      </ul>
+      <div class="container">
+        <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
+      </div>
+      <div class="container">
+        <table class="table">
+          <thead>
+            <tr>
+              <td>Ride</td>
+              <td>Average</td>
+              <td>Minimum</td>
+              <td>Maximum</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ride in rides">
+              <td>{{ ride.name }}</td>
+              <td>{{ ride.average | number: 0 }}</td>
+              <td>{{ ride.minimum }}</td>
+              <td>{{ ride.maximum }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <script src="/bower_components/moment/moment.js"></script>

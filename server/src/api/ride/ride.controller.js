@@ -4,104 +4,180 @@ var _ = require('lodash');
 var Ride = require('./ride.model');
 
 exports.index = function(req, res) {
-  if(req.query.metrics === 'true') {
+  if (req.query.metrics === 'true') {
     Ride.aggregate([{
-        $unwind: '$waitTimes'
+      $unwind: '$waitTimes'
     }, {
-        $project: {
-            id: 1,
-            name: 1,
-            waitTimes: 1
-        }
-    },{
-        $group: {
-            _id: '$id',
-            id: {
-                $first: '$id'
-            },
-            name: {
-                $first: '$name'
-            },
-            average: {
-                $avg: '$waitTimes.minutes'
-            },
-            minimum: {
-                $min: '$waitTimes.minutes'
-            },
-            maximum: {
-                $max: '$waitTimes.minutes'
-            }
-        }
+      $project: {
+        id: 1,
+        name: 1,
+        waitTimes: 1
+      }
     }, {
-        $sort: {
-            'average': -1
+      $group: {
+        _id: '$id',
+        id: {
+          $first: '$id'
+        },
+        name: {
+          $first: '$name'
+        },
+        average: {
+          $avg: '$waitTimes.minutes'
+        },
+        minimum: {
+          $min: '$waitTimes.minutes'
+        },
+        maximum: {
+          $max: '$waitTimes.minutes'
         }
+      }
+    }, {
+      $sort: {
+        'average': -1
+      }
     }]).exec(function(err, rides) {
-      if(err) { return handleError(res, err); }
+      if (err) {
+        return handleError(res, err);
+      }
       return res.status(200).json(rides);
     });
   } else {
-    Ride.find({}).select('-_id -waitTimes -__v').exec(function (err, rides) {
-      if(err) { return handleError(res, err); }
+    Ride.find({}).select('-_id -waitTimes -__v').exec(function(err, rides) {
+      if (err) {
+        return handleError(res, err);
+      }
       return res.status(200).json(rides);
     });
   }
 };
 
 exports.show = function(req, res) {
-  if(!req.params.id) {
+  if (!req.params.id) {
     return res.status(404);
   } else {
     Ride.aggregate([{
-        $unwind: '$waitTimes'
+      $unwind: '$waitTimes'
     }, {
-        $project: {
-            id: 1,
-            name: 1,
-            waitTimes: 1,
-            localTime: {
-                $subtract: [ '$waitTimes.date', 8 * 60 * 60 * 1000] //convert to pacific time
-            }
+      $project: {
+        id: 1,
+        name: 1,
+        waitTimes: 1,
+        localTime: {
+          $subtract: ['$waitTimes.date', 8 * 60 * 60 * 1000] //convert to pacific time
         }
+      }
     }, {
-        $match: {
-            id: req.params.id
-        }
+      $match: {
+        id: req.params.id
+      }
     }, {
-        $group: {
-            _id: {
-                $dayOfYear: '$localTime'
-            },
-            id: {
-                $first: '$id'
-            },
-            name: {
-                $first: '$name'
-            },
-            average: {
-                $avg: '$waitTimes.minutes'
-            },
-            minimum: {
-                $min: '$waitTimes.minutes'
-            },
-            maximum: {
-                $max: '$waitTimes.minutes'
-            },
-            waitTimes: {
-                $push: '$waitTimes'
-            }
+      $group: {
+        _id: {
+          $dayOfYear: '$localTime'
+        },
+        id: {
+          $first: '$id'
+        },
+        name: {
+          $first: '$name'
+        },
+        average: {
+          $avg: '$waitTimes.minutes'
+        },
+        minimum: {
+          $min: '$waitTimes.minutes'
+        },
+        maximum: {
+          $max: '$waitTimes.minutes'
+        },
+        waitTimes: {
+          $push: '$waitTimes'
         }
+      }
     }, {
-        $sort: {
-            'waitTimes.date': -1
-        }
+      $sort: {
+        'waitTimes.date': -1
+      }
     }]).exec(function(err, days) {
-      if(err) { return handleError(res, err); }
+      if (err) {
+        return handleError(res, err);
+      }
       return res.status(200).json(days);
     });
   }
 };
 
+exports.statistics = function(req, res) {
+  var dayOfWeek = parseInt(req.params.dayOfWeek, 10);
+  if(!_.isNumber(dayOfWeek) || _.isNaN(dayOfWeek)) {
+    return handleError(res, {
+      error: 'Must be a number between 1-7.'
+    });
+  } else {
+    Ride.aggregate([{
+        $project: {
+          waitTimes: 1,
+          id: 1,
+          name: 1
+        },
+      }, {
+        $unwind: '$waitTimes'
+      }, {
+        $project: {
+          id: 1,
+          name: 1,
+          waitTimes: 1,
+          dayOfWeek: {
+            $dayOfWeek: {
+              $subtract: ['$waitTimes.date', 8 * 60 * 60 * 1000]
+            }
+          },
+          week: {
+            $week: {
+              $subtract: ['$waitTimes.date', 8 * 60 * 60 * 1000]
+            }
+          }
+        }
+      }, {
+        $match: {
+          'dayOfWeek': {
+            $eq: dayOfWeek
+          }
+        }
+      }, {
+        $group: {
+          _id: '$id',
+          id: {
+            $first: '$id'
+          },
+          name: {
+            $first: '$name'
+          },
+          average: {
+            $avg: '$waitTimes.minutes'
+          },
+          min: {
+            $min: '$waitTimes.minutes'
+          },
+          max: {
+            $max: '$waitTimes.minutes'
+          }
+        }
+      }, {
+        $sort: {
+          'average': -1
+        }
+      }
+    ]).exec(function(err, rides) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(200).json(rides);
+    });
+  }
+}
+
 function handleError(res, err, status) {
-  return res.send(status || 500, err);
+  return res.status(status || 500).json(err);
 }

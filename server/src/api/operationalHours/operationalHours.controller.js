@@ -51,5 +51,5 @@ exports.show = function(req, res) {
 }
 
 function handleError(res, err, status) {
-  return res.send(status || 500, err);
+  return res.status(status || 500).json(err);
 }

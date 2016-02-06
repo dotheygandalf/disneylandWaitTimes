@@ -34,7 +34,7 @@ angular.module('disneylandCharts', [
       yAxis: {
           axisLabel: 'Wait Times (Minutes)',
           tickFormat: function(d){
-              return d3.format('.02f')(d);
+              return d3.format()(d);
           },
           axisLabelDistance: -10
       },
