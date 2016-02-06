@@ -4,6 +4,41 @@ angular.module('disneylandCharts', [
 ])
 
 .controller('dummy', function($scope, $http) {
+
+  $scope.xFunction = function(){
+    return function(d){
+      return d[0];
+    };
+  };
+
+  $scope.yFunction = function(){
+    return function(d){
+      return d[1];
+    };
+  };
+
+  $scope.sparklineOptions = {
+    chart: {
+        type: 'sparklinePlus',
+        height: 120,
+        width: 500,
+        x: function(d, i){
+          return d.x;
+        },
+        y: function(d) {
+          return d.y;
+        },
+        xTickFormat: function(d) {
+            return d3.time.format('%I: %M %p')(d);
+        },
+        color: function() {
+          return '#3f8691';
+        },
+        noData: 'No Data'
+    }
+  };
+
+
   $scope.chartOptions = {
     chart: {
       type: 'lineChart',
@@ -42,8 +77,16 @@ angular.module('disneylandCharts', [
     }
   };
 
-  $http.get('/api/v1/rides?metrics=true').then(function(response) {
-    $scope.rides = response.data;
+  $http.get('/api/v1/rides').then(function(response) {
+    $scope.rides = _.map(response.data, function(ride) {
+      ride.data = _.map(ride.waitTime, function(waitTime) {
+        return {
+          x: new Date(waitTime.date),
+          y: waitTime.minutes
+        };
+      });
+      return ride;
+    });
   });
 
   $http.get('/api/v1/rides/353355').then(function(response) {

@@ -12,6 +12,13 @@
         stroke-opacity: 1 !important;
         stroke-width: 2px;
       }
+
+      .nvd3 .nv-sparkline path {
+        stroke-width: 2px;
+      }
+      .nvd3.nv-sparklineplus .nv-minValue, .nv-maxValue {
+        stroke-width: 7px;
+      }
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
@@ -24,16 +31,14 @@
             <tr>
               <th>Ride</th>
               <th>Average</th>
-              <th>Minimum</th>
-              <th>Maximum</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="ride in rides">
+            <tr ng-repeat="ride in rides" ng-if="rides">
               <td>{{ ride.name }}</td>
-              <td>{{ ride.average | number: 0 }}</td>
-              <td>{{ ride.minimum }}</td>
-              <td>{{ ride.maximum }}</td>
+              <td>
+                <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
+              </td>
             </tr>
           </tbody>
         </table>

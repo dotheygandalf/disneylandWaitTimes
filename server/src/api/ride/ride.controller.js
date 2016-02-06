@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('lodash');
-var Ride = require('./ride.model');
+var _ = require('lodash')
+  , Ride = require('./ride.model')
+  , moment = require('moment');
 
 exports.index = function(req, res) {
   if (req.query.metrics === 'true') {
@@ -176,6 +177,54 @@ exports.statistics = function(req, res) {
       return res.status(200).json(rides);
     });
   }
+}
+
+exports.sparkline = function(req, res) {
+  var daysFromToday = parseInt(req.query.daysFromToday);
+  if(!_.isNumber(daysFromToday) || _.isNaN(daysFromToday)) {
+    daysFromToday = 0;
+  }
+  Ride.aggregate([{
+    $unwind: '$waitTimes'
+  }, {
+    $project: {
+      id: 1,
+      name: 1,
+      waitTimes: 1
+    }
+  }, {
+    $match: {
+      'waitTimes.date': {
+        $gte: moment().tz('America/Los_Angeles').subtract(daysFromToday, 'day').startOf('day').toDate(),
+        $lte: moment().tz('America/Los_Angeles').subtract(daysFromToday, 'day').endOf('day').toDate()
+      }
+    }
+  }, {
+    $group: {
+      _id: '$id',
+      id: {
+        $first: '$id'
+      },
+      name: {
+        $first: '$name'
+      },
+      waitTime: {
+        $push: '$waitTimes'
+      },
+      maxWaitTime: {
+        $max: '$waitTimes.minutes'
+      }
+    }
+  }, {
+    $sort: {
+      'maxWaitTime': -1
+    }
+  }]).exec(function(err, rides) {
+    if (err) {
+      return handleError(res, err);
+    }
+    return res.status(200).json(rides);
+  });
 }
 
 function handleError(res, err, status) {
