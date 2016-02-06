@@ -34,12 +34,16 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Status</th>
+              <th>Fast Pass</th>
               <th>Ride</th>
-              <th>Average</th>
+              <th>Wait Time</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="ride in rides" ng-if="rides">
+              <td>{{ ride.active }}</td>
+              <td>{{ ride.fastPass }}</td>
               <td>{{ ride.name }}</td>
               <td>
                 <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>

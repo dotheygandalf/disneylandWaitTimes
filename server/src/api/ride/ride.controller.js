@@ -213,11 +213,18 @@ exports.sparkline = function(req, res) {
       },
       maxWaitTime: {
         $max: '$waitTimes.minutes'
+      },
+      active: {
+        $last: '$waitTimes.active'
+      },
+      fastPass: {
+        $last: '$waitTimes.fastPass'
       }
     }
   }, {
     $sort: {
-      'maxWaitTime': -1
+      maxWaitTime: -1,
+      active: 1
     }
   }]).exec(function(err, rides) {
     if (err) {
