@@ -15,20 +15,17 @@
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
-    <h1>Welcome to Disneyland</h1>
 
     <div ng-controller="dummy">
       <div class="container">
-        <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
-      </div>
-      <div class="container">
-        <table class="table">
+        <h1>Disneyland Wait Time Arbitrage</h1>
+        <table class="table table-striped">
           <thead>
             <tr>
-              <td>Ride</td>
-              <td>Average</td>
-              <td>Minimum</td>
-              <td>Maximum</td>
+              <th>Ride</th>
+              <th>Average</th>
+              <th>Minimum</th>
+              <th>Maximum</th>
             </tr>
           </thead>
           <tbody>
@@ -40,6 +37,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="container">
+        <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
       </div>
     </div>
 
