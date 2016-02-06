@@ -5,7 +5,13 @@ var mongoose = require('mongoose')
   , express = require('express')
   , config = require('./config')
   , recordWaitTimes = require('./server/src/service/recordWaitTimes')
-  , path = require('path');
+  , path = require('path')
+  , DisneyAPI = require("wdwjs")
+  , MagicKingdom = new DisneyAPI.DisneylandMagicKingdom()
+  , CaliforniaAdventure = new DisneyAPI.DisneylandCaliforniaAdventure();
+
+var DISNEYLAND = 'disneyland'
+  , CALIFORNIA_ADVENTURE = 'california_adventure';
 
 mongoose.connect(config.mongodb.url);
 var db = mongoose.connection;
@@ -13,7 +19,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
 	if(app.get('env') === 'production') {
-		recordWaitTimes.start();
+		recordWaitTimes.start(MagicKingdom, DISNEYLAND);
+  	recordWaitTimes.start(CaliforniaAdventure, CALIFORNIA_ADVENTURE);
 	}
 });
 

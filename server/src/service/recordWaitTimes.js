@@ -1,7 +1,5 @@
 'use strict';
-var DisneyAPI = require("wdwjs")
-	, mongoose = require('mongoose')
-	, MagicKingdom = new DisneyAPI.DisneylandMagicKingdom()
+var mongoose = require('mongoose')
 	, _ = require('lodash')
 	, moment = require('moment')
 	, CronJob = require('cron').CronJob
@@ -13,24 +11,26 @@ var DisneyAPI = require("wdwjs")
 require('moment-range');
 require('moment-timezone');
 
-exports.start = function() {
+exports.start = function(parkAPI, parkId) {
 	console.log('Start loggin Disneyland wait times...');
-	var job = new CronJob('00 */10 * * * *', getData, function() {
+	var job = new CronJob('00 */10 * * * *', function() {
+		getData(parkAPI, parkId);
+	}, function() {
 		console.log('done');
 	}, true, 'America/Los_Angeles');
 	job.start();
 };
 
-function getData() {
+function getData(parkAPI, parkId) {
 	console.log('Start checking');
 	console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
-	checkDate().then(function(operationalHours) {
+	checkDate(parkAPI, parkId).then(function(operationalHours) {
 		console.log('hours received');
 		var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
 		if(range.contains(moment().tz('America/Los_Angeles'))) {
 			console.log('Within park operating hours');
 			console.log('Checking wait times...');
-			checkAndRecordWaitTimes();
+			checkAndRecordWaitTimes(parkAPI, parkId);
 		} else {
 			var openingHour = moment(operationalHours.openingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
 			var closingHour = moment(operationalHours.closingTime).tz('America/Los_Angeles').format('ddd, h:mmA');
@@ -42,13 +42,14 @@ function getData() {
 	});
 }
 
-function checkDate() {
+function checkDate(parkAPI, parkId) {
 	console.log('checking date');
 	var deferred = Q.defer();
 	OperationalHours.findOne({
-		'date': {
-			'$gte': moment().tz('America/Los_Angeles').startOf('day').toDate(),
-			'$lte': moment().tz('America/Los_Angeles').endOf('day').toDate()
+		park: parkId,
+		date: {
+			$gte: moment().tz('America/Los_Angeles').startOf('day').toDate(),
+			$lte: moment().tz('America/Los_Angeles').endOf('day').toDate()
 		}
 	}, function(err, operationalHours) {
 		if(err) {
@@ -58,13 +59,14 @@ function checkDate() {
 		if(operationalHours) {
 			deferred.resolve(operationalHours);
 		} else {
-			MagicKingdom.GetOpeningTimes(function(err, data) {
+			parkAPI.GetOpeningTimes(function(err, data) {
 					if (err) {
 						deferred.reject();
 						return console.error("Error fetching Magic Kingdom schedule: " + err);
 					}
 					_.each(data, function(day) {
 						OperationalHours.create({
+							park: parkId,
 							date: moment(day.date).toDate(),
 							openingTime: moment(day.openingTime).toDate(),
 							closingTime: moment(day.closingTime).toDate()
@@ -84,8 +86,8 @@ function checkDate() {
 	return deferred.promise;
 }
 
-function checkAndRecordWaitTimes() {
-	MagicKingdom.GetWaitTimes(function(err, data) {
+function checkAndRecordWaitTimes(parkAPI, parkId) {
+	parkAPI.GetWaitTimes(function(err, data) {
 		if (err) {
 			return console.error("Error fetching Magic Kingdom wait times: " + err);
 		}
@@ -100,6 +102,9 @@ function checkAndRecordWaitTimes() {
 				if(err) {
 					console.log(err);
 					deferred.reject();
+				}
+				if(!ride.park) {
+					ride.park = parkId;
 				}
 				ride.waitTimes.push({
 					fastPass: rideData.fastPass,

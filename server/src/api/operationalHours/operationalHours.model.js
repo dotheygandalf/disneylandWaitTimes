@@ -5,6 +5,7 @@ var mongoose = require('mongoose')
   , findOrCreate = require('mongoose-findorcreate');
 
 var OperationalHoursSchema = new mongoose.Schema({
+  park: String,
 	date: Date,
 	openingTime: Date,
 	closingTime: Date

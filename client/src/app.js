@@ -31,6 +31,9 @@ angular.module('disneylandCharts', [
         xTickFormat: function(d) {
             return d3.time.format('%I: %M %p')(d);
         },
+        yTickFormat: function(d) {
+            return d3.format()(d);
+        },
         color: function() {
           return '#afafaf';
         },

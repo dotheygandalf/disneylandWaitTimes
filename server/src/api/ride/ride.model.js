@@ -6,6 +6,7 @@ var mongoose = require('mongoose')
   , WaitTime = require('../waitTime/waitTime.model');
 
 var RideSchema = new mongoose.Schema({
+  park: String,
   id: String,
   name: String,
   waitTimes: [ WaitTime.schema ]

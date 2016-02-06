@@ -25,6 +25,9 @@
          stroke: #7dbf97;
         stroke-width: 7px;
       }
+      .nv-valueWrap .nv-currentValue {
+        fill: #333 !important;
+      }
 
       .status-light {
           height: 70px;
@@ -55,6 +58,11 @@
       .fast-pass-status.fast-pass-status-off {
         color: #d9534f;
       }
+
+      .ride-name {
+        position: relative;
+        top: 40px;
+      }
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
@@ -79,7 +87,9 @@
               <td>
                 <i class="fa fa-ticket fast-pass-status" ng-class="{'fast-pass-status-on': ride.fastPass, 'fast-pass-status-off': !ride.fastPass}"></i>
               </td>
-              <td>{{ ride.name }}</td>
+              <td>
+                <h4 class="ride-name">{{ ride.name }}</h4>
+              </td>
               <td>
                 <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
               </td>
