@@ -32,7 +32,7 @@ angular.module('disneylandCharts', [
             return d3.time.format('%I: %M %p')(d);
         },
         color: function() {
-          return '#3f8691';
+          return '#afafaf';
         },
         noData: 'No Data'
     }
