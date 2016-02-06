@@ -224,7 +224,7 @@ exports.sparkline = function(req, res) {
   }, {
     $sort: {
       maxWaitTime: -1,
-      active: 1
+      active: -1
     }
   }]).exec(function(err, rides) {
     if (err) {

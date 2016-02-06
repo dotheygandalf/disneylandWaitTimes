@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <style>
@@ -24,6 +25,36 @@
          stroke: #7dbf97;
         stroke-width: 7px;
       }
+
+      .status-light {
+          height: 70px;
+          width: 70px;
+          border-radius: 50%;
+          border: 3px solid;
+          position: relative;
+          top: 20px;
+      }
+      .status-light.status-light-on {
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+      }
+
+      .status-light.status-light-off {
+        background-color: #d9534f;
+        border-color: #d43f3a;
+      }
+
+      .fast-pass-status {
+        font-size: 70px;
+        position: relative;
+        top: 22px;
+      }
+      .fast-pass-status.fast-pass-status-on {
+        color: #5cb85c;
+      }
+      .fast-pass-status.fast-pass-status-off {
+        color: #d9534f;
+      }
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
@@ -42,8 +73,12 @@
           </thead>
           <tbody>
             <tr ng-repeat="ride in rides" ng-if="rides">
-              <td>{{ ride.active }}</td>
-              <td>{{ ride.fastPass }}</td>
+              <td>
+                <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>
+              </td>
+              <td>
+                <i class="fa fa-ticket fast-pass-status" ng-class="{'fast-pass-status-on': ride.fastPass, 'fast-pass-status-off': !ride.fastPass}"></i>
+              </td>
               <td>{{ ride.name }}</td>
               <td>
                 <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
