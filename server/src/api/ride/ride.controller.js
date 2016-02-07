@@ -211,8 +211,8 @@ exports.sparkline = function(req, res) {
       waitTime: {
         $push: '$waitTimes'
       },
-      maxWaitTime: {
-        $max: '$waitTimes.minutes'
+      currentWaitTime: {
+        $last: '$waitTimes.minutes'
       },
       active: {
         $last: '$waitTimes.active'
@@ -223,7 +223,7 @@ exports.sparkline = function(req, res) {
     }
   }, {
     $sort: {
-      maxWaitTime: -1,
+      currentWaitTime: -1,
       active: -1
     }
   }]).exec(function(err, rides) {

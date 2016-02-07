@@ -74,7 +74,6 @@
           <thead>
             <tr>
               <th>Status</th>
-              <th>Fast Pass</th>
               <th>Ride</th>
               <th>Wait Time</th>
             </tr>
@@ -83,9 +82,6 @@
             <tr ng-repeat="ride in rides" ng-if="rides">
               <td>
                 <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>
-              </td>
-              <td>
-                <i class="fa fa-ticket fast-pass-status" ng-class="{'fast-pass-status-on': ride.fastPass, 'fast-pass-status-off': !ride.fastPass}"></i>
               </td>
               <td>
                 <h4 class="ride-name">{{ ride.name }}</h4>
