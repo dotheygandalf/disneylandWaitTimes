@@ -18,10 +18,10 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
-	if(app.get('env') === 'production') {
-		recordWaitTimes.start(MagicKingdom, DISNEYLAND);
-  	recordWaitTimes.start(CaliforniaAdventure, CALIFORNIA_ADVENTURE);
-	}
+  if(app.get('env') === 'production') {
+    recordWaitTimes.start(MagicKingdom, DISNEYLAND);
+    recordWaitTimes.start(CaliforniaAdventure, CALIFORNIA_ADVENTURE);
+  }
 });
 
 var app = express();

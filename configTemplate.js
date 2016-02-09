@@ -1,7 +1,9 @@
 var config = {
-	mongodb: {
-		url: ''
-	}
+  mongodb: {
+    url: ''
+  },
+  port: 3000,
+  root: './'
 };
 
 module.exports = config;
