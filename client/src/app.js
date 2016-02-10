@@ -93,9 +93,15 @@ angular.module('disneylandCharts', [
   });
 
   $http.get('/api/v1/rides/353355').then(function(response) {
-    $scope.chartData = _.map(response.data, function(day) {
+    //filter function should be done on the api side
+    $scope.chartData = _.chain(response.data).reject(function(day) {
+        if(moment().day() === moment().dayOfYear(day._id).day()) {
+          return false;
+        }
+        return true;
+    }).map(function(day) {
       return {
-        key: moment().dayOfYear(day._id).format('ddd'),
+        key: moment().dayOfYear(day._id).format('ddd, MMM D'),
         values: _.map(day.waitTimes, function(waitTime) {
           return {
             x: moment(waitTime.date).dayOfYear(1).toDate(),
@@ -103,6 +109,6 @@ angular.module('disneylandCharts', [
           }
         })
       };
-    });
+    }).value();
   });
 });
