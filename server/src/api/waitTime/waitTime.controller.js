@@ -22,6 +22,12 @@ exports.index = function(req, res) {
           },
           fastPass: {
               $last: '$fastPass'
+          },
+          waitTimes: {
+              $push: {
+                  minutes: '$minutes',
+                  date: '$date'
+              }
           }
       }
   }, {

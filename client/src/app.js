@@ -82,7 +82,7 @@ angular.module('disneylandCharts', [
 
   $http.get('/api/v1/waitTimes/rides').then(function(response) {
     $scope.rides = _.map(response.data, function(ride) {
-      ride.data = _.map(ride.waitTime, function(waitTime) {
+      ride.data = _.map(ride.waitTimes, function(waitTime) {
         return {
           x: new Date(waitTime.date),
           y: waitTime.minutes
