@@ -12,7 +12,8 @@ require('moment-range');
 require('moment-timezone');
 
 exports.start = function(parkAPI, parkId) {
-	console.log('Start loggin Disneyland wait times...');
+	console.log('Start logging Disneyland wait times...');
+	getData(parkAPI, parkId);
 	var job = new CronJob('00 */10 * * * *', function() {
 		getData(parkAPI, parkId);
 	}, function() {
@@ -95,29 +96,20 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 		_.each(data, function(rideData) {
 			var deferred = Q.defer();
 			promises.push(deferred.promise);
-			Ride.findOrCreate({
-				id: rideData.id,
-				name: rideData.name
-			}, function(err, ride) {
-				if(err) {
-					console.log(err);
-					deferred.reject();
+			var waitTime = new WaitTime({
+			  park: parkId,
+			  id: rideData.id,
+			  name: rideData.name,
+				fastPass: rideData.fastPass,
+				active: rideData.active,
+				minutes: rideData.waitTime,
+				date: new Date()
+			});
+			waitTime.save(function(error) {
+				if(error) {
+					return deferred.reject();
 				}
-				if(!ride.park) {
-					ride.park = parkId;
-				}
-				ride.waitTimes.push({
-					fastPass: rideData.fastPass,
-					active: rideData.active,
-					minutes: rideData.waitTime,
-					date: new Date()
-				});
-				ride.save(function(err) {
-					if(err) {
-						return deferred.reject();
-					}
-					deferred.resolve();
-				});
+				return deferred.resolve();
 			});
 		});
 		Q.all(promises).then(function() {

@@ -4,6 +4,9 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema;
 
 var WaitTimeSchema = new mongoose.Schema({
+  park: String,
+  id: String,
+  name: String,
   fastPass: Boolean,
   active: Boolean,
   minutes: Number,
