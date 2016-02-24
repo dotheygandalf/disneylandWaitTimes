@@ -23,13 +23,13 @@ angular.module('disneylandCharts', [
         height: 120,
         width: 500,
         x: function(d, i){
-          return d.x;
+          return moment(d.x).valueOf();
         },
         y: function(d) {
           return d.y;
         },
         xTickFormat: function(d) {
-            return d3.time.format('%I: %M %p')(d);
+            return d3.time.format('%I: %M %p')(moment(d).toDate());
         },
         yTickFormat: function(d) {
             return d3.format()(d);
@@ -84,7 +84,7 @@ angular.module('disneylandCharts', [
     $scope.rides = _.map(response.data, function(ride) {
       ride.data = _.map(ride.waitTimes, function(waitTime) {
         return {
-          x: new Date(waitTime.date),
+          x: moment(waitTime.date).toDate(),
           y: waitTime.minutes
         };
       });
