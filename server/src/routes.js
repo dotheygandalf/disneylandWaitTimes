@@ -7,6 +7,7 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/v1/rides', require('./api/ride'));
+  app.use('/api/v1/waitTimes', require('./api/waitTime'));
   app.use('/api/v1/operationalHours', require('./api/operationalHours'));
 
   // All undefined asset or api routes should return a 404

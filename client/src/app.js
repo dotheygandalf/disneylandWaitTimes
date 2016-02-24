@@ -80,7 +80,7 @@ angular.module('disneylandCharts', [
     }
   };
 
-  $http.get('/api/v1/rides').then(function(response) {
+  $http.get('/api/v1/waitTimes/rides').then(function(response) {
     $scope.rides = _.map(response.data, function(ride) {
       ride.data = _.map(ride.waitTime, function(waitTime) {
         return {
@@ -92,7 +92,7 @@ angular.module('disneylandCharts', [
     });
   });
 
-  $http.get('/api/v1/rides/353355').then(function(response) {
+  $http.get('/api/v1/waitTimes/rides/353355').then(function(response) {
     //filter function should be done on the api side
     $scope.chartData = _.chain(response.data).reject(function(day) {
         if(moment().day() === moment().dayOfYear(day._id).day()) {
