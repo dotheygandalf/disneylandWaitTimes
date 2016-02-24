@@ -1,4 +1,8 @@
-db.getCollection('waittimes').aggregate([{
+db.getCollection('waittimes').aggregate([{
+        $match: {
+            id: '353355'
+        }
+    }, {
         $project: {
             id: 1,
             name: 1,
@@ -6,10 +10,6 @@ db.getCollection('waittimes').aggregate([{
             localTime: {
                 $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
             }
-        }
-    }, {
-        $match: {
-            id: '353355'
         }
     }, {
         $group: {

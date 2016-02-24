@@ -5,6 +5,13 @@ var WaitTime = require('./waitTime.model')
 
 exports.index = function(req, res) {
   WaitTime.aggregate([{
+      $match: {
+          date: {
+              $gt: new Date(new Date().setHours(0,0,0,0)),
+              $lte: new Date(new Date().setHours(23,59,59,999))
+          }
+      }
+    }, {
       $sort: {
           date: 1
       }
@@ -32,6 +39,7 @@ exports.index = function(req, res) {
       }
   }, {
     $sort: {
+      currentWaitTime: -1,
       active: -1
     }
   }]).exec(function(error, waitTimes) {
