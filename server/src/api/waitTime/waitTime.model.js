@@ -8,6 +8,10 @@ var WaitTimeSchema = new mongoose.Schema({
   id: String,
   name: String,
   fastPass: Boolean,
+  fastPassWindow: {
+    startDate: Date,
+    endDate: Date
+  },
   active: Boolean,
   minutes: Number,
   temperature: Number,
