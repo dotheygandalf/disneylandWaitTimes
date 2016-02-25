@@ -1,0 +1,11 @@
+<div class="container">
+  <ul class="lsit-group">
+    <li class="list-group-item" ng-repeat="ride in optimalFastPasses">
+      <div class="text-center">
+        <div>{{ ride.name }}</div>
+        <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
+        <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
+      </div>
+    </li>
+  </ul>
+</div>

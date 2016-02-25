@@ -8,7 +8,7 @@
         views: {
           main: {
             controller: 'homeCtrl',
-            templateUrl: 'home/home.html'
+            templateUrl: 'views/home/home.html'
           }
         }
       });

@@ -69,6 +69,7 @@
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
+    <navigation></navigation>
     <div ui-view="main"></div>
 
     <!-- <div ng-controller="dummy">
@@ -142,7 +143,11 @@
     <script class="application-template" src="/bin/assets/app-templates.js"></script>
 
     <script class="application-src" src="src/app.js"></script>
-    <script class="application-src" src="src/home/index.js"></script>
-    <script class="application-src" src="src/home/home.controller.js"></script>
+    <script class="application-src" src="src/views/home/index.js"></script>
+    <script class="application-src" src="src/views/home/home.controller.js"></script>
+    <script class="application-src" src="src/views/deals/index.js"></script>
+    <script class="application-src" src="src/views/deals/deals.controller.js"></script>
+
+    <script class="application-src" src="src/navigation/navigation.directive.js"></script>
   </body>
 </html>

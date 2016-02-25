@@ -53,25 +53,24 @@ module.exports = function(grunt) {
         tasks: [ 'dom_munger', 'jshint:src' ]
       },
 
-      html: {
-        files: 'client/index.html',
-        tasks: [ 'dom_munger:index' ]
+      index: {
+        files: [ 'client/index.html' ],
+        tasks: [ 'dom_munger' ]
       }
     }
   };
 
   grunt.initConfig( grunt.util._.extend( config, userConfig ) );
 
-  grunt.registerTask('default', [
-    'clean',
-    'html2js'
-  ]);
-
   grunt.registerTask('build', [
     'clean',
     'dom_munger',
     'jshint',
     'html2js'
+  ]);
+
+  grunt.registerTask('default', [
+    'build'
   ]);
 
   grunt.renameTask('watch', 'delta');
