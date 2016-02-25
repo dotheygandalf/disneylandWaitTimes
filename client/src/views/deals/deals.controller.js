@@ -10,7 +10,10 @@
       }, 15000);
 
       $http.get('/api/v1/waitTimes/rides/optimal').then(function(response) {
-        $scope.optimalFastPasses = response.data;
+        $scope.optimalFastPasses = _.map(response.data, function(ride) {
+          ride.timeFromNow = moment(ride.fastPassWindow.startDate).fromNow();
+          return ride;
+        });
       });
     });
 })();

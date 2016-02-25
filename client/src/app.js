@@ -1,6 +1,7 @@
 angular.module('disneylandCharts', [
   'templates-app',
   'ui.router',
+  'ui.bootstrap',
   'nvd3'
 ])
 

@@ -90,6 +90,7 @@ exports.optimalFastPass = function(req, res) {
     }
   }, {
     $match: {
+      active: true,
       fastPass: true,
       'fastPassWindow.startDate': {
         $gt: moment().tz('America/Los_Angeles').toDate(),

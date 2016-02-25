@@ -5,6 +5,7 @@
       <div class="text-center">
         <div>{{ ride.name }}</div>
         <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
+        <div>Matures {{ ride.timeFromNow }}</div>
         <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
       </div>
     </li>
