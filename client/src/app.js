@@ -3,6 +3,9 @@ angular.module('disneylandCharts', [
   'ui.router',
   'ui.bootstrap',
   'angular.filter',
+  'ngMaterial',
+  'ngAnimate',
+  'ngAria',
   'nvd3'
 ])
 

@@ -1,77 +1,74 @@
 'use strict';
 
 var WaitTime = require('./waitTime.model')
+  , Ride = require('../ride/ride.model')
   , moment = require('moment')
   , _ = require('lodash');
 
 exports.index = function(req, res) {
-  var rideMatch;
-  if(_.isArray(req.query.rides)) {
-    rideMatch = _.map(req.query.rides, function(ride) {
+  Ride.find({
+    enabled: true
+  }).select('id').exec(function(error, rides) {
+    var rideMatch = _.map(rides, function(ride) {
       return {
-        id: ride
+        id: ride.id
       };
     });
-  } else if(req.query.rides) {
-    rideMatch = [{
-      id: req.query.rides
-    }];
-  }
-
-  var matchQuery = {
-    date: {
-      $gt: moment().startOf('day').toDate(),
-      $lte: moment().endOf('day').toDate()
-    }
-  };
-  if(rideMatch) {
-    matchQuery.$or = rideMatch;
-  }
-  WaitTime.aggregate([{
-      $match: matchQuery
-    }, {
-      $sort: {
-        date: 1
+    var matchQuery = {
+      date: {
+        $gt: moment().startOf('day').toDate(),
+        $lte: moment().endOf('day').toDate()
       }
-    }, {
-      $group: {
-        _id: '$id',
-        currentWaitTime: {
-          $last: '$minutes'
-        },
-        name: {
-          $first: '$name'
-        },
-        active: {
-          $last: '$active'
-        },
-        fastPass: {
-          $last: '$fastPass'
-        },
-        fastPassWindow: {
-          $last: '$fastPassWindow'
-        },
-        park: {
-          $first: '$park'
-        },
-        waitTimes: {
-          $push: {
-            minutes: '$minutes',
-            date: '$date'
+    };
+    if(rideMatch) {
+      matchQuery.$or = rideMatch;
+    }
+    WaitTime.aggregate([{
+        $match: matchQuery
+      }, {
+        $sort: {
+          date: 1
+        }
+      }, {
+        $group: {
+          _id: '$id',
+          currentWaitTime: {
+            $last: '$minutes'
+          },
+          name: {
+            $first: '$name'
+          },
+          active: {
+            $last: '$active'
+          },
+          fastPass: {
+            $last: '$fastPass'
+          },
+          fastPassWindow: {
+            $last: '$fastPassWindow'
+          },
+          park: {
+            $first: '$park'
+          },
+          waitTimes: {
+            $push: {
+              minutes: '$minutes',
+              date: '$date'
+            }
           }
         }
+    }, {
+      $sort: {
+        currentWaitTime: -1,
+        active: -1
       }
-  }, {
-    $sort: {
-      currentWaitTime: -1,
-      active: -1
-    }
-  }]).exec(function(error, waitTimes) {
-    if(error) {
-      return handleError(res, error);
-    }
+    }]).exec(function(error, waitTimes) {
+      if(error) {
+        return handleError(res, error);
+      }
 
-    return res.status(200).json(waitTimes);
+      return res.status(200).json(waitTimes);
+    });
   });
 };
 
