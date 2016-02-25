@@ -1,0 +1,28 @@
+<div class="container">
+  <table class="table table-striped" ng-if="rides.length">
+    <thead>
+      <tr>
+        <th>Fast Pass Return Time</th>
+        <th>Status</th>
+        <th>Ride</th>
+        <th>Wait Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="ride in rides" ng-if="rides">
+        <td>
+          <div ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date:'h:mm a' }} - {{ ride.fastPassWindow.endDate | date:'h:mm a' }}</div>
+        </td>
+        <td>
+          <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>
+        </td>
+        <td>
+          <div class="ride-name">{{ ride.name }}</div>
+        </td>
+        <td>
+          <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

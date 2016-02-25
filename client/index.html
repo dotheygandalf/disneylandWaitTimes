@@ -74,59 +74,6 @@
 
     <!-- <div ng-controller="dummy">
       <div class="container">
-
-        <div class="row text-center">
-          <h1>Disneyland Wait Time Arbitrage</h1>
-          <h2>Disneyland Hours</h2>
-          <h3>{{disneylandHours.openingTime | date: 'hh:mm a'}} - {{disneylandHours.closingTime | date: 'hh:mm a'}}</h3>
-          <h2>California Adventure Hours</h2>
-          <h3>{{californiaAdventureHours.openingTime | date: 'hh:mm a'}} - {{californiaAdventureHours.closingTime | date: 'hh:mm a'}}</h3>
-        </div>
-
-        <h2 class="text-center" ng-if="!rides.length">It looks like everything is closed</h2>
-
-        <ul class="lsit-group">
-          <li class="list-group-item" ng-repeat="ride in optimalFastPasses">
-            <div class="text-center">
-              <div>{{ ride.name }}</div>
-              <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
-              <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
-            </div>
-          </li>
-        </ul>
-
-        <table class="table table-striped" ng-if="rides.length">
-          <thead>
-            <tr>
-              <th>Fast Pass</th>
-              <th>Fast Pass Window</th>
-              <th>Status</th>
-              <th>Ride</th>
-              <th>Wait Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="ride in rides" ng-if="rides">
-              <td>
-                <div class="status-light" ng-class="{'status-light-on': ride.fastPass, 'status-light-off': !ride.fastPass}"></div>
-              </td>
-              <td>
-                <div ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date:'h:mm a' }} - {{ ride.fastPassWindow.endDate | date:'h:mm a' }}</div>
-              </td>
-              <td>
-                <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>
-              </td>
-              <td>
-                <div class="ride-name">{{ ride.name }}</div>
-              </td>
-              <td>
-                <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="container">
         <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
       </div>
     </div> -->
@@ -147,6 +94,8 @@
     <script class="application-src" src="src/views/home/home.controller.js"></script>
     <script class="application-src" src="src/views/deals/index.js"></script>
     <script class="application-src" src="src/views/deals/deals.controller.js"></script>
+    <script class="application-src" src="src/views/waitTimes/index.js"></script>
+    <script class="application-src" src="src/views/waitTimes/waitTimes.controller.js"></script>
 
     <script class="application-src" src="src/navigation/navigation.directive.js"></script>
   </body>
