@@ -1,13 +1,15 @@
 <div class="container">
   <h1 class="text-center">It is currently: {{ currentTime }}</h1>
-  <ul class="lsit-group">
-    <li class="list-group-item" ng-repeat="ride in optimalFastPasses">
-      <div class="text-center">
-        <div>{{ ride.name }}</div>
-        <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
-        <div>Matures {{ ride.timeFromNow }}</div>
-        <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
-      </div>
-    </li>
-  </ul>
+  <div ng-repeat="(timeFromNow, rides) in optimalFastPasses | groupBy: 'timeFromNow'">
+    <ul class="lsit-group">
+      <h4 class="text-center">Matures {{ timeFromNow }}</h4>
+      <li ng-repeat="ride in rides" class="list-group-item">
+        <div class="text-center">
+          <div>{{ ride.name }}</div>
+          <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
+          <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>

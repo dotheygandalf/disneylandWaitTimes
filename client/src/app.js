@@ -2,6 +2,7 @@ angular.module('disneylandCharts', [
   'templates-app',
   'ui.router',
   'ui.bootstrap',
+  'angular.filter',
   'nvd3'
 ])
 
