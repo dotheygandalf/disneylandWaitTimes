@@ -31,6 +31,7 @@ app.set('appPath', path.join(config.root, 'client'));
 app.set('view engine', 'jade');
 app.use('/bower_components', express.static('bower_components'));
 app.use('/client', express.static('client'));
+app.use('/bin', express.static('bin'));
 
 server.listen(config.port, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));

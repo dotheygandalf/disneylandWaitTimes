@@ -1,7 +1,14 @@
 angular.module('disneylandCharts', [
+  'templates-app',
   'ui.router',
   'nvd3'
 ])
+
+.config(function($urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider, $stateProvider) {
+  $urlRouterProvider.otherwise('/');
+  $locationProvider.html5Mode(true);
+  $urlMatcherFactoryProvider.strictMode(true);
+})
 
 .controller('dummy', function($scope, $http) {
 

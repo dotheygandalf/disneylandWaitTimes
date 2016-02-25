@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <base href="/"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <style>
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
         display: none !important;
@@ -68,8 +69,9 @@
     </style>
   </head>
   <body ng-app="disneylandCharts" ng-cloak>
+    <div ui-view="main"></div>
 
-    <div ng-controller="dummy">
+    <!-- <div ng-controller="dummy">
       <div class="container">
 
         <div class="row text-center">
@@ -126,7 +128,7 @@
       <div class="container">
         <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
       </div>
-    </div>
+    </div> -->
 
     <script src="/bower_components/moment/moment.js"></script>
     <script src="/bower_components/moment-range/dist/moment-range.js"></script>
@@ -137,6 +139,10 @@
     <script src="/bower_components/nvd3/build/nv.d3.js"></script>
     <script src="/bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
 
+    <script src="/bin/assets/app-templates.js"></script>
+
     <script src="/client/src/app.js"></script>
+    <script src="/client/src/home/index.js"></script>
+    <script src="/client/src/home/home.controller.js"></script>
   </body>
 </html>
