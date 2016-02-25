@@ -20,7 +20,7 @@ exports.index = function(req, res) {
         $lte: moment().endOf('day').toDate()
       }
     };
-    if(rideMatch) {
+    if(rideMatch.length > 0) {
       matchQuery.$or = rideMatch;
     }
     WaitTime.aggregate([{
