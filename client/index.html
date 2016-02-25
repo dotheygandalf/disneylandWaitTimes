@@ -88,7 +88,7 @@
                 <div class="status-light" ng-class="{'status-light-on': ride.fastPass, 'status-light-off': !ride.fastPass}"></div>
               </td>
               <td>
-                <div ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date }} - {{ ride.fastPassWindow.startDate | date }}</div>
+                <div ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date:'h:mm a' }} - {{ ride.fastPassWindow.endDate | date:'h:mm a' }}</div>
               </td>
               <td>
                 <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>

@@ -96,35 +96,38 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 		_.each(data, function(rideData) {
 			var deferred = Q.defer();
 			promises.push(deferred.promise);
-			var startTime, endTime;
-			if(rideData.fastPassWindow && rideData.fastPassWindow.startDate && rideData.fastPassWindow.endDate) {
-				startTime = rideData.fastPassWindow.startDate.split(':');
-				endTime = rideData.fastPassWindow.endDate.split(':');
+			if(rideData.id === '16514416') {
+				console.log(rideData);
 			}
-			var waitTime = new WaitTime({
-				park: parkId,
-				id: rideData.id,
-				name: rideData.name,
-				fastPass: rideData.fastPass,
-				active: rideData.active,
-				minutes: rideData.waitTime,
-				date: new Date(),
-				fastPassWindow: {
-					startDate: startTime ? moment().tz('America/Los_Angeles').hours(startTime[0]).minutes(startTime[1]).seconds(0) : undefined,
-					endDate: endTime ? moment().tz('America/Los_Angeles').hours(endTime[0]).minutes(endTime[1]).seconds(0) : undefined
-				}
-			});
-			waitTime.save(function(error) {
-				if(error) {
-					return deferred.reject();
-				}
-				return deferred.resolve();
-			});
+			// var startTime, endTime;
+			// if(rideData.fastPassWindow && rideData.fastPassWindow.startDate && rideData.fastPassWindow.endDate) {
+			// 	startTime = rideData.fastPassWindow.startDate.split(':');
+			// 	endTime = rideData.fastPassWindow.endDate.split(':');
+			// }
+			// var waitTime = new WaitTime({
+			// 	park: parkId,
+			// 	id: rideData.id,
+			// 	name: rideData.name,
+			// 	fastPass: rideData.fastPass,
+			// 	active: rideData.active,
+			// 	minutes: rideData.waitTime,
+			// 	date: new Date(),
+			// 	fastPassWindow: {
+			// 		startDate: startTime ? moment().tz('America/Los_Angeles').hours(startTime[0]).minutes(startTime[1]).seconds(0) : undefined,
+			// 		endDate: endTime ? moment().tz('America/Los_Angeles').hours(endTime[0]).minutes(endTime[1]).seconds(0) : undefined
+			// 	}
+			// });
+			// waitTime.save(function(error) {
+			// 	if(error) {
+			// 		return deferred.reject();
+			// 	}
+			// 	return deferred.resolve();
+			// });
 		});
-		Q.all(promises).then(function() {
-			console.log('Wait times recorded');
-		}, function() {
-			console.log('There was a problem recording wait times');
-		});
+		// Q.all(promises).then(function() {
+		// 	console.log('Wait times recorded');
+		// }, function() {
+		// 	console.log('There was a problem recording wait times');
+		// });
 	});
 }

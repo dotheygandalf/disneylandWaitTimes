@@ -93,6 +93,10 @@ exports.optimalFastPass = function(req, res) {
         $lt: moment().tz('America/Los_Angeles').add(2, 'hours').toDate()
       }
     }
+  }, {
+    $sort: {
+      'fastPassWindow.startDate': 1
+    }
   }]).exec(function(error, waitTimes) {
     if(error) {
       return handleError(res, error);
