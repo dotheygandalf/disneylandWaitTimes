@@ -6,6 +6,26 @@ module.exports = function(grunt) {
   var config = {
     clean: [ 'bin' ],
 
+    dom_munger: {
+      main: {
+        options: {
+          read: {
+            selector: 'script.application-src',
+            attribute: 'src',
+            writeto: 'appJSRefs',
+            isPath: true
+          }
+        },
+        src: 'client/index.html'
+      }
+    },
+
+    jshint: {
+      src: [
+        '<%= dom_munger.data.appJSRefs %>'
+      ]
+    },
+
     html2js: {
       app: {
         options: {
@@ -20,10 +40,14 @@ module.exports = function(grunt) {
       tpls: {
         files: [ '<%= app.html %>'],
         tasks: [ 'html2js' ]
+      },
+      
+      js: {
+        files: [ '<%= dom_munger.data.appJSRefs %>' ],
+        tasks: [ 'dom_munger', 'jshint:src' ]
       }
     }
   };
-
 
   grunt.initConfig( grunt.util._.extend( config, userConfig ) );
 
@@ -34,6 +58,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean',
+    'dom_munger',
+    'jshint',
     'html2js'
   ]);
 
@@ -42,5 +68,4 @@ module.exports = function(grunt) {
     'build',
     'delta'
   ]);
-
 };
