@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
   , recordWaitTimes = require('./server/src/service/recordWaitTimes')
   , path = require('path')
   , DisneyAPI = require("wdwjs")
+  , jade = require('jade')
   , MagicKingdom = new DisneyAPI.DisneylandMagicKingdom()
   , CaliforniaAdventure = new DisneyAPI.DisneylandCaliforniaAdventure();
 
@@ -27,6 +28,7 @@ db.once('open', function() {
 var app = express();
 var server = require('http').createServer(app);
 app.set('appPath', path.join(config.root, 'client'));
+app.set('view engine', 'jade');
 app.use('/bower_components', express.static('bower_components'));
 app.use('/client', express.static('client'));
 
