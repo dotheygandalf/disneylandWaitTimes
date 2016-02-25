@@ -14,9 +14,15 @@ module.exports = function(grunt) {
             attribute: 'src',
             writeto: 'appJSRefs',
             isPath: true
-          }
+          },
+          prefix: {
+            selector:'script.application-src',
+            attribute:'src',
+            value:'/client/'
+          },
         },
-        src: 'client/index.html'
+        src: 'client/index.html',
+        dest: 'bin/index.html'
       }
     },
 
@@ -41,10 +47,15 @@ module.exports = function(grunt) {
         files: [ '<%= app.html %>'],
         tasks: [ 'html2js' ]
       },
-      
+
       js: {
         files: [ '<%= dom_munger.data.appJSRefs %>' ],
         tasks: [ 'dom_munger', 'jshint:src' ]
+      },
+
+      html: {
+        files: 'client/index.html',
+        tasks: [ 'dom_munger:index' ]
       }
     }
   };

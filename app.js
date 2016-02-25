@@ -27,7 +27,7 @@ db.once('open', function() {
 
 var app = express();
 var server = require('http').createServer(app);
-app.set('appPath', path.join(config.root, 'client'));
+app.set('appPath', path.join(config.root, 'bin'));
 app.set('view engine', 'jade');
 app.use('/bower_components', express.static('bower_components'));
 app.use('/client', express.static('client'));
