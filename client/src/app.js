@@ -92,7 +92,7 @@ angular.module('disneylandCharts', [
     });
   });
 
-  $http.get('/api/v1/waitTimes/rides/353355').then(function(response) {
+  /*$http.get('/api/v1/waitTimes/rides/353355').then(function(response) {
     //filter function should be done on the api side
     $scope.chartData = _.chain(response.data).reject(function(day) {
         if(moment().day() === moment().dayOfYear(day._id).day()) {
@@ -110,5 +110,5 @@ angular.module('disneylandCharts', [
         })
       };
     }).value();
-  });
+  });*/
 });

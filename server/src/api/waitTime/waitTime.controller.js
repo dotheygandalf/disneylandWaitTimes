@@ -7,35 +7,38 @@ exports.index = function(req, res) {
   WaitTime.aggregate([{
       $match: {
           date: {
-              $gt: new Date(new Date().setHours(0,0,0,0)),
-              $lte: new Date(new Date().setHours(23,59,59,999))
+            $gt: new Date(new Date().setHours(0,0,0,0)),
+            $lte: new Date(new Date().setHours(23,59,59,999))
           }
       }
     }, {
       $sort: {
-          date: 1
+        date: 1
       }
     }, {
       $group: {
-          _id: '$id',
-          currentWaitTime: {
-              $last: '$minutes'
-          },
-          name: {
-            $first: '$name'
-          },
-          active: {
-              $last: '$active'
-          },
-          fastPass: {
-              $last: '$fastPass'
-          },
-          waitTimes: {
-              $push: {
-                  minutes: '$minutes',
-                  date: '$date'
-              }
+        _id: '$id',
+        currentWaitTime: {
+          $last: '$minutes'
+        },
+        name: {
+          $first: '$name'
+        },
+        active: {
+          $last: '$active'
+        },
+        fastPass: {
+          $last: '$fastPass'
+        },
+        fastPassWindow: {
+          $last: '$fastPassWindow'
+        },
+        waitTimes: {
+          $push: {
+            minutes: '$minutes',
+            date: '$date'
           }
+        }
       }
   }, {
     $sort: {
@@ -48,6 +51,53 @@ exports.index = function(req, res) {
     }
 
     return res.status(200).json(waitTimes);
+  });
+};
+
+exports.optimalFastPass = function(req, res) {
+  WaitTime.aggregate([{
+    $match: {
+      date: {
+        $gte: moment().tz('America/Los_Angeles').startOf('day').toDate(),
+        $lte: moment().tz('America/Los_Angeles').endOf('day').toDate()
+      }
+    }
+  }, {
+    $sort: {
+      date: 1
+    }
+  }, {
+    $group: {
+      _id: '$id',
+      currentWaitTime: {
+        $last: '$minutes'
+      },
+      name: {
+        $first: '$name'
+      },
+      active: {
+        $last: '$active'
+      },
+      fastPass: {
+        $last: '$fastPass'
+      },
+      fastPassWindow: {
+        $last: '$fastPassWindow'
+      }
+    }
+  }, {
+    $match: {
+      fastPass: true,
+      'fastPassWindow.startDate': {
+        $gt: moment().tz('America/Los_Angeles').toDate(),
+        $lt: moment().tz('America/Los_Angeles').add(2, 'hours').toDate()
+      }
+    }
+  }]).exec(function(error, waitTimes) {
+    if(error) {
+      return handleError(res, error);
+    }
+    res.status(200).json(waitTimes);
   });
 };
 

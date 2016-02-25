@@ -13,6 +13,7 @@ require('moment-timezone');
 
 exports.start = function(parkAPI, parkId) {
 	console.log('Start logging Disneyland wait times...');
+	getData(parkAPI, parkId);
 	var job = new CronJob('00 */10 * * * *', function() {
 		getData(parkAPI, parkId);
 	}, function() {

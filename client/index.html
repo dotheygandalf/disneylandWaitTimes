@@ -75,6 +75,8 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Fast Pass</th>
+              <th>Fast Pass Window</th>
               <th>Status</th>
               <th>Ride</th>
               <th>Wait Time</th>
@@ -82,6 +84,12 @@
           </thead>
           <tbody>
             <tr ng-repeat="ride in rides" ng-if="rides">
+              <td>
+                <div class="status-light" ng-class="{'status-light-on': ride.fastPass, 'status-light-off': !ride.fastPass}"></div>
+              </td>
+              <td>
+                <div ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date }} - {{ ride.fastPassWindow.startDate | date }}</div>
+              </td>
               <td>
                 <div class="status-light" ng-class="{'status-light-on': ride.active, 'status-light-off': !ride.active}"></div>
               </td>
