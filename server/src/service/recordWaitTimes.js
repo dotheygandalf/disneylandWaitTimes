@@ -104,6 +104,13 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 				startTime = rideData.fastPassWindow.startDate.split(':');
 				endTime = rideData.fastPassWindow.endDate.split(':');
 			}
+
+			Ride.findOrCreate({
+				id: rideData.id,
+				name: rideData.name,
+				park: parkId
+			});
+
 			var waitTime = new WaitTime({
 				park: parkId,
 				id: rideData.id,

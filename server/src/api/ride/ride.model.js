@@ -2,14 +2,13 @@
 
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
-  , findOrCreate = require('mongoose-findorcreate')
-  , WaitTime = require('../waitTime/waitTime.model');
+  , findOrCreate = require('mongoose-findorcreate');
 
 var RideSchema = new mongoose.Schema({
   park: String,
   id: String,
   name: String,
-  waitTimes: [ WaitTime.schema ]
+  enabled: Boolean
 });
 
 RideSchema.plugin(findOrCreate);

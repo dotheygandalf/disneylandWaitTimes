@@ -5,8 +5,6 @@ var controller = require('./ride.controller');
 
 var router = express.Router();
 
-router.get('/', controller.sparkline);
-router.get('/statistics/:dayOfWeek', controller.statistics);
-router.get('/:id', controller.show);
+router.get('/', controller.index);
 
 module.exports = router;

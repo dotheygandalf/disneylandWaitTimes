@@ -1,16 +1,34 @@
 'use strict';
 
 var WaitTime = require('./waitTime.model')
-  , moment = require('moment');
+  , moment = require('moment')
+  , _ = require('lodash');
 
 exports.index = function(req, res) {
+  var rideMatch;
+  if(_.isArray(req.query.rides)) {
+    rideMatch = _.map(req.query.rides, function(ride) {
+      return {
+        id: ride
+      };
+    });
+  } else if(req.query.rides) {
+    rideMatch = [{
+      id: req.query.rides
+    }];
+  }
+
+  var matchQuery = {
+    date: {
+      $gt: moment().startOf('day').toDate(),
+      $lte: moment().endOf('day').toDate()
+    }
+  };
+  if(rideMatch) {
+    matchQuery.$or = rideMatch;
+  }
   WaitTime.aggregate([{
-      $match: {
-          date: {
-            $gt: moment().startOf('day').toDate(),
-            $lte: moment().endOf('day').toDate()
-          }
-      }
+      $match: matchQuery
     }, {
       $sort: {
         date: 1

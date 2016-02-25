@@ -8,6 +8,12 @@
           type: 'sparklinePlus',
           height: 120,
           width: 500,
+          margin: {
+            top: 20,
+            bottom: 20,
+            left: 90,
+            right: 30
+          },
           x: function(d, i){
             return moment(d.x).valueOf();
           },
@@ -15,7 +21,7 @@
             return d.y;
           },
           xTickFormat: function(d) {
-              return d3.time.format('%I: %M %p')(moment(d).toDate());
+              return d3.time.format('%_I: %M %p')(moment(d).toDate());
           },
           yTickFormat: function(d) {
               return d3.format()(d);
