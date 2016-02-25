@@ -98,6 +98,7 @@ exports.optimalFastPass = function(req, res) {
     }
   }, {
     $sort: {
+      'currentWaitTime': 1,
       'fastPassWindow.startDate': 1
     }
   }]).exec(function(error, waitTimes) {

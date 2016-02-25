@@ -80,6 +80,10 @@ angular.module('disneylandCharts', [
     }
   };
 
+  $http.get('/api/v1/waitTimes/rides/optimal').then(function(response) {
+    $scope.optimalFastPasses = response.data;
+  });
+
   $http.get('api/v1/operationalHours').then(function(response) {
     $scope.californiaAdventureHours = response.data[0];
     $scope.disneylandHours = response.data[1];
