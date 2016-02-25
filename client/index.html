@@ -1,4 +1,4 @@
-<!doctype html>
+1<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -71,8 +71,18 @@
 
     <div ng-controller="dummy">
       <div class="container">
-        <h1>Disneyland Wait Time Arbitrage</h1>
-        <table class="table table-striped">
+
+        <div class="row text-center">
+          <h1>Disneyland Wait Time Arbitrage</h1>
+          <h2>Disneyland Hours</h2>
+          <h3>{{disneylandHours.openingTime | date: 'hh:mm a'}} - {{disneylandHours.closingTime | date: 'hh:mm a'}}</h3>
+          <h2>California Adventure Hours</h2>
+          <h3>{{californiaAdventureHours.openingTime | date: 'hh:mm a'}} - {{californiaAdventureHours.closingTime | date: 'hh:mm a'}}</h3>
+        </div>
+
+        <h2 class="text-center" ng-if="!rides.length">It looks like everything is closed</h2
+        >
+        <table class="table table-striped" ng-if="rides.length">
           <thead>
             <tr>
               <th>Fast Pass</th>
@@ -109,6 +119,7 @@
     </div>
 
     <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/moment-range/dist/moment-range.js"></script>
     <script src="/bower_components/lodash/dist/lodash.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>

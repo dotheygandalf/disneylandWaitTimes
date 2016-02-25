@@ -30,7 +30,7 @@ app.set('appPath', path.join(config.root, 'client'));
 app.use('/bower_components', express.static('bower_components'));
 app.use('/client', express.static('client'));
 
-server.listen(config.port, config.ip, function () {
+server.listen(config.port, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 });
 

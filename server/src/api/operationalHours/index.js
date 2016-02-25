@@ -5,7 +5,7 @@ var controller = require('./operationalHours.controller');
 
 var router = express.Router();
 
-router.get('/', controller.index);
+router.get('/', controller.todaysHours);
 router.get('/:date', controller.show);
 
 module.exports = router;

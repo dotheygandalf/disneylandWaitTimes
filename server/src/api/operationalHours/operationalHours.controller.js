@@ -32,6 +32,17 @@ exports.index = function(req, res) {
   }
 }
 
+exports.todaysHours = function(req, res) {
+  OperationalHours.find({
+    date: moment().tz('America/Los_Angeles').startOf('day')
+  }).exec(function(error, operationalHours) {
+    if(error) {
+        return handleError(res, error);
+      }
+      return res.status(200).json(operationalHours);
+  });
+};
+
 exports.show = function(req, res) {
   var date = req.params.date;
   if(!date) {

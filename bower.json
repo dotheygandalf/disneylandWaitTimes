@@ -23,6 +23,7 @@
     "lodash": "^4.2.1",
     "moment": "^2.11.2",
     "bootstrap": "^3.3.6",
-    "font-awesome": "^4.5.0"
+    "font-awesome": "^4.5.0",
+    "moment-range": "^2.1.0"
   }
 }
