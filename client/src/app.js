@@ -18,11 +18,14 @@ angular.module('disneylandCharts', [
 .controller('mainCtrl', function($rootScope, $scope, $http, $state, $mdSidenav) {
   $scope.go = function(state) {
     $state.go(state);
+    if($mdSidenav('nav').isOpen()) {
+      $mdSidenav('nav').toggle();
+    }
   };
 
   $scope.toggleNav = function() {
-    $mdSidenav('nav').toggle()
-  }
+    $mdSidenav('nav').toggle();
+  };
 
   $rootScope.$on('$stateChangeStart', 
     function(event, toState, toParams, fromState, fromParams, options) {
