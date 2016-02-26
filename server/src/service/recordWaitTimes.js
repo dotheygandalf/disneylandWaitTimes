@@ -93,6 +93,27 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 		}
 		var promises = [];
 		_.each(data, function(rideData) {
+			if(_.indexOf([
+				'353305',
+				'353313',
+				'353315',
+				'353309',
+				'353321',
+				'353329',
+				'353335',
+				'353351',
+				'353353',
+				'353395',
+				'353461',
+				'393385',
+				'18237344',
+				'17328049',
+				'16581435',
+				'17945184',
+				'353339'], rideData.id) >= 0) {
+				return;
+			}
+
 			var deferred = Q.defer();
 			promises.push(deferred.promise);
 			if(rideData.id === '16514416') {
@@ -108,9 +129,7 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 				id: rideData.id,
 				name: rideData.name,
 				park: parkId
-			}, function() {
-
-			});
+			}, _.noop);
 
 			var waitTime = new WaitTime({
 				park: parkId,
