@@ -1,5 +1,13 @@
 <div class="container">
   <md-progress-circular ng-if="!deals" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
+  <section ng-if="deals.length === 0" style="text-align: center;margin-top: 60px;">
+    <md-icon style="height: 120px;width: 120px;">
+      <i class="material-icons" style="font-size: 120px;">sentiment_dissatisfied</i>
+    </md-icon>
+    <h1>
+      It looks like all the fast passes have been handed out.
+    </h1>
+  </section>
   <div ng-if="deals">
     <div ng-repeat="deal in deals">
       <md-list>

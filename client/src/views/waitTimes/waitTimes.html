@@ -2,11 +2,18 @@
   <md-progress-circular ng-if="!rides" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
   <div ng-repeat="ride in rides" ng-if="rides">
     <md-card>
+      <md-card-header>
+        <md-card-avatar>
+          <md-icon class="md-avatar-icon" ng-style="activeState(ride.active)"></md-icon>
+        </md-card-avatar>
+        <md-card-header-text>
+          <span class="md-title">{{ ride.name }}</span>
+          <span class="md-subhead">{{ ride.currentWaitTime }} minutes</span>
+        </md-card-header-text>
+      </md-card-header>
       <nvd3 options="$parent.sparklineOptions" data="ride.data"></nvd3>
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">{{ ride.name }}</span>
-          <span class="md-subhead">{{ ride.currentWaitTime }} minutes</span>
           <span class="md-subhead" ng-if="ride.fastPassWindow">{{ ride.fastPassWindow.startDate | date:'h:mm a' }} - {{ ride.fastPassWindow.endDate | date:'h:mm a' }}</span>
         </md-card-title-text>
       </md-card-title>

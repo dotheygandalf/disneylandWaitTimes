@@ -3,6 +3,18 @@
 
   angular.module('disneylandCharts')
     .controller('waitTimesCtrl', function($scope, $http) {
+      $scope.activeState = function(active) {
+        if(active) {
+          return {
+            'background-color': '#7dbf97'
+          };
+        } else {
+          return {
+            'background-color': '#f07b7b'
+          };
+        }
+      };
+
       $scope.sparklineOptions = {
         chart: {
           type: 'sparklinePlus',
