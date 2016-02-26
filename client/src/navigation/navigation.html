@@ -1,6 +1,5 @@
-<nav class="navbar navbar-default">
+<!-- <nav class="navbar navbar-default">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
         <span class="sr-only">Toggle navigation</span>
@@ -11,7 +10,6 @@
       <a class="navbar-brand" ui-sref="home">Wait Time Arbitrage</a>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" uib-collapse="!isCollapsed">
       <ul class="nav navbar-nav">
         <li ui-sref-active="active"><a ui-sref="deals">Deals <span class="sr-only">(current)</span></a></li>
@@ -23,3 +21,37 @@
     </div>
   </div>
 </nav>
+ -->
+
+
+
+<section layout="row" flex>
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar class="md-theme-indigo">
+      <h1 class="md-toolbar-tools">Wait Time Arbitrage</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+      <ul class="nav navbar-nav">
+        <li ui-sref-active="active"><a ui-sref="deals">Deals <span class="sr-only">(current)</span></a></li>
+        <li ui-sref-active="active"><a ui-sref="waitTimes">Wait Times <span class="sr-only">(current)</span></a></li>
+        <li ui-sref-active="active"><a ui-sref="administration">Administration</a></li>
+      </ul>
+    </md-content>
+  </md-sidenav>
+  <md-content md-scroll-y flex class="layout-column flex">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="toggleLeft()">
+          <md-icon>
+            <i class="material-icons">menu</i>
+          </md-icon>
+        </md-button>
+        <h2>
+          <span></span>
+        </h2>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+    <div ui-view="main"></div>
+  </md-content>
+</section>
