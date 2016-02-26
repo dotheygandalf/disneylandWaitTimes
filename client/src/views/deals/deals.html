@@ -3,7 +3,7 @@
   <div ng-if="deals">
     <div ng-repeat="deal in deals">
       <md-list>
-        <md-subheader class="md-no-sticky">Matures in {{ deal.timeFromNow | humanize }} at {{ deal.rides[0].fastPassWindow.startDate | date: 'h:mm a' }} - {{ deal.rides[0].fastPassWindow.endDate | date: 'h:mm a' }}</md-subheader>
+        <md-subheader class="md-no-sticky">Matures in {{ deal.timeFromNow | humanize }} at {{ deal.rides[0].fastPassWindow.startDate | date: 'h:mm a' }}</md-subheader>
         <md-list-item ng-repeat="ride in deal.rides">
           <div class="md-list-item-text" layout="column">
             <h4>{{ ride.name }}</h4>
