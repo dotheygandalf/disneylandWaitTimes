@@ -18,7 +18,8 @@ exports.index = function(req, res) {
       date: {
         $gt: moment().tz('America/Los_Angeles').startOf('day').toDate(),
         $lte: moment().tz('America/Los_Angeles').endOf('day').toDate()
-      }
+      },
+      active: true
     };
     if(rideMatch.length > 0) {
       matchQuery.$or = rideMatch;
