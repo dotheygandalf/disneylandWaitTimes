@@ -16,8 +16,8 @@ exports.index = function(req, res) {
     });
     var matchQuery = {
       date: {
-        $gt: moment().startOf('day').toDate(),
-        $lte: moment().endOf('day').toDate()
+        $gt: moment().tz('America/Los_Angeles').startOf('day').toDate(),
+        $lte: moment().tz('America/Los_Angeles').endOf('day').toDate()
       }
     };
     if(rideMatch.length > 0) {
