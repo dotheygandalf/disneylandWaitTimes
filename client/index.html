@@ -79,9 +79,18 @@
   <body ng-app="disneylandCharts" ng-cloak layout="column">
     <section layout="row" flex ng-controller="mainCtrl">
       <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-md')">
-        <md-toolbar class="md-theme-indigo">
-          <h1 class="md-toolbar-tools">Wait Time Arbitrage</h1>
-        </md-toolbar>
+        <div>
+          <md-toolbar>
+            <div layout="row" class="md-toolbar-tools">
+              <md-button layout="row" md-ink-ripple hide-gt-md class="md-icon-button md-button" ng-click="toggleNav()">
+                <i class="material-icons">close</i>
+              </md-button>
+              <div layout="row" class="md-toolbar-tools" flex>
+                <h2>Wait Time Arbitrage</h2>
+              </div>
+            </md-toolbar>
+          </div>
+        </div>
         <md-content>
           <md-list class="navigation">
             <md-list-item ng-click="go('deals')" md-ink-ripple ui-sref-active="active">
