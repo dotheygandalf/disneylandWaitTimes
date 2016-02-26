@@ -116,9 +116,6 @@ function checkAndRecordWaitTimes(parkAPI, parkId) {
 
 			var deferred = Q.defer();
 			promises.push(deferred.promise);
-			if(rideData.id === '16514416') {
-				console.log(rideData);
-			}
 			var startTime, endTime;
 			if(rideData.fastPassWindow && rideData.fastPassWindow.startDate && rideData.fastPassWindow.endDate) {
 				startTime = rideData.fastPassWindow.startDate.split(':');
