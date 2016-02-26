@@ -2,13 +2,12 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="/"/>
     <title>Wait Time Arbitrage</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.layouts.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <style>
       [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -94,34 +93,33 @@
         <md-content>
           <md-list class="navigation">
             <md-list-item ng-click="go('deals')" md-ink-ripple ui-sref-active="active">
-              <a ui-sref="deals">Deals</a>
+              <div>Deals</div>
             </md-list-item>
             <md-list-item ng-click="go('waitTimes')" md-ink-ripple ui-sref-active="active">
-              <a ui-sref="waitTimes">Wait Times</a>
+              <div>Wait Times</div>
             </md-list-item>
             <md-list-item ng-click="go('administration')" md-ink-ripple ui-sref-active="active">
-              <a ui-sref="administration">Administration</a>
+              <div>Administration</div>
             </md-list-item>
           </md-list>
         </md-content>
       </md-sidenav>
-      <md-content flex>
-        <div>
-          <md-toolbar>
-            <div layout="row" class="md-toolbar-tools">
-              <md-button layout="row" md-ink-ripple hide-gt-md class="md-icon-button md-button" ng-click="toggleNav()">
-                <i class="material-icons">menu</i>
-              </md-button>
-              <div layout="row" class="md-toolbar-tools" flex>
-                <h2>{{ title }}</h2>
-              </div>
-            </md-toolbar>
+      <div>
+        <md-toolbar style="position: fixed;">
+          <div layout="row" class="md-toolbar-tools">
+            <md-button layout="row" md-ink-ripple hide-gt-md class="md-icon-button md-button" ng-click="toggleNav()">
+              <i class="material-icons">menu</i>
+            </md-button>
+            <div layout="row" class="md-toolbar-tools" flex>
+              <h2>{{ title }}</h2>
+            </div>
           </div>
-        </div>
+        </md-toolbar>
+      </div>
+      <md-content flex style="margin-top: 60px;">
         <div layout="column" layout-fill layout-align="top center" layout-padding>
           <div ui-view="main"></div>
         </div>
-        <div flex></div>
       </md-content>
     </section>
 

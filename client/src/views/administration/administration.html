@@ -1,5 +1,7 @@
 <md-list>
-  <md-subheader class="md-no-sticky">Rides</md-subheader>
+  <md-subheader class="md-no-sticky">
+    <h1>Rides</h1>
+  </md-subheader>
   <md-list-item ng-repeat="ride in rides">
     <p> {{ ride.name }} </p>
     <md-checkbox class="md-secondary" ng-model="ride.enabled" ng-change="updateRide(ride.id, ride.enabled)"></md-checkbox>
