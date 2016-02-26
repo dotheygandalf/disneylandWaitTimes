@@ -1,5 +1,6 @@
 <div class="container">
-  <div class="row text-center">
+  <md-progress-circular ng-if="!disneylandHours || !californiaAdventureHours" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
+  <div class="row text-center" ng-if="disneylandHours && californiaAdventureHours">
     <h2>Disneyland Hours</h2>
     <h3>{{disneylandHours.openingTime | date: 'hh:mm a'}} - {{disneylandHours.closingTime | date: 'hh:mm a'}}</h3>
     <h2>California Adventure Hours</h2>

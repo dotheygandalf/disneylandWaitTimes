@@ -11,9 +11,16 @@
 
       $http.get('/api/v1/waitTimes/rides/optimal').then(function(response) {
         $scope.optimalFastPasses = _.map(response.data, function(ride) {
-          ride.timeFromNow = moment(ride.fastPassWindow.startDate).fromNow();
+          var diff = moment(ride.fastPassWindow.startDate).diff(moment());
+          ride.timeFromNow = Math.floor(diff / 60 / 1000);
           return ride;
         });
       });
+    })
+
+    .filter('humanize', function() {
+      return function(duration) {
+        return moment.duration(parseInt(duration, 10), 'minutes').humanize();
+      };
     });
 })();

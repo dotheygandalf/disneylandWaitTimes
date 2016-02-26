@@ -1,15 +1,16 @@
 <div class="container">
-  <h1 class="text-center">It is currently: {{ currentTime }}</h1>
-  <div ng-repeat="(timeFromNow, rides) in optimalFastPasses | groupBy: 'timeFromNow'">
-    <ul class="lsit-group">
-      <h4 class="text-center">Matures {{ timeFromNow }}</h4>
-      <li ng-repeat="ride in rides" class="list-group-item">
-        <div class="text-center">
-          <div>{{ ride.name }}</div>
-          <div>Wait Time: {{ ride.currentWaitTime }} minutes</div>
-          <div>{{ ride.fastPassWindow.startDate | date: 'hh:mm a' }} - {{ ride.fastPassWindow.endDate | date: 'hh:mm a' }}</div>
-        </div>
-      </li>
-    </ul>
+  <md-progress-circular ng-if="!optimalFastPasses" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
+  <div ng-if="optimalFastPasses">
+    <div ng-repeat="rides in optimalFastPasses | groupBy: 'timeFromNow' | toArray: true | orderBy:'$key'">
+      <md-list>
+        <md-subheader class="md-no-sticky">Matures in {{ rides.$key | humanize }} at {{ rides[0].fastPassWindow.startDate | date: 'h:mm a' }} - {{ rides[0].fastPassWindow.endDate | date: 'h:mm a' }}</md-subheader>
+        <md-list-item ng-repeat="ride in rides">
+          <div class="md-list-item-text" layout="column">
+            <h4>{{ ride.name }}</h4>
+            <p>Wait Time: {{ ride.currentWaitTime }} minutes</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
   </div>
 </div>
