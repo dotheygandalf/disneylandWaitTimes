@@ -7,12 +7,11 @@
         chart: {
           type: 'sparklinePlus',
           height: 120,
-          width: 500,
           margin: {
             top: 20,
             bottom: 20,
-            left: 90,
-            right: 30
+            left: 20,
+            right: 45
           },
           x: function(d, i){
             return moment(d.x).valueOf();
@@ -49,7 +48,7 @@
                 return false;
               }
             }
-            return true;
+            return false;
           }).map(function(ride) {
             ride.data = _.map(ride.waitTimes, function(waitTime) {
               return {
