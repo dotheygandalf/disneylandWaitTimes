@@ -78,7 +78,7 @@
   </head>
   <body ng-app="disneylandCharts" ng-cloak layout="column">
     <section layout="row" flex ng-controller="mainCtrl">
-      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="nav" md-is-locked-open="$mdMedia('gt-md')">
         <md-toolbar class="md-theme-indigo">
           <h1 class="md-toolbar-tools">Wait Time Arbitrage</h1>
         </md-toolbar>
@@ -99,8 +99,15 @@
       <md-content flex>
         <div>
           <md-toolbar>
-            <h1 class="md-toolbar-tools">{{ title }}</h1>
-          </md-toolbar>
+            <div layout="row" class="md-toolbar-tools">
+              <md-button layout="row" md-ink-ripple hide-gt-md class="md-icon-button md-button" ng-click="toggleNav()">
+                <i class="material-icons">menu</i>
+              </md-button>
+              <div layout="row" class="md-toolbar-tools" flex>
+                <h2>{{ title }}</h2>
+              </div>
+            </md-toolbar>
+          </div>
         </div>
         <div layout="column" layout-fill layout-align="top center" layout-padding>
           <div ui-view="main"></div>

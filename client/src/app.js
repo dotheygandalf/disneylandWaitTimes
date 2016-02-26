@@ -15,10 +15,14 @@ angular.module('disneylandCharts', [
   $urlMatcherFactoryProvider.strictMode(true);
 })
 
-.controller('mainCtrl', function($rootScope, $scope, $http, $state) {
+.controller('mainCtrl', function($rootScope, $scope, $http, $state, $mdSidenav) {
   $scope.go = function(state) {
     $state.go(state);
   };
+
+  $scope.toggleNav = function() {
+    $mdSidenav('nav').toggle()
+  }
 
   $rootScope.$on('$stateChangeStart', 
     function(event, toState, toParams, fromState, fromParams, options) {
