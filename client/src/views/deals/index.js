@@ -10,6 +10,9 @@
             controller: 'dealsCtrl',
             templateUrl: 'views/deals/deals.html'
           }
+        },
+        data: {
+          title: 'Deals'
         }
       });
     });

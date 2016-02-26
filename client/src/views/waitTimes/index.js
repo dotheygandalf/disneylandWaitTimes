@@ -10,6 +10,9 @@
             controller: 'waitTimesCtrl',
             templateUrl: 'views/waitTimes/waitTimes.html'
           }
+        },
+        data: {
+          title: 'Wait Times'
         }
       });
     });

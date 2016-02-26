@@ -10,6 +10,9 @@
             controller: 'homeCtrl',
             templateUrl: 'views/home/home.html'
           }
+        },
+        data: {
+          title: 'Home'
         }
       });
     });
