@@ -10,6 +10,9 @@
             controller: 'administrationCtrl',
             templateUrl: 'views/administration/administration.html'
           }
+        },
+        data: {
+          title: 'Administration'
         }
       });
     });

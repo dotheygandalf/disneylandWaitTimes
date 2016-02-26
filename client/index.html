@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <base href="/"/>
+    <title>Wait Time Arbitrage</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.layouts.css">
@@ -69,17 +70,44 @@
         position: relative;
         top: 40px;
       }
+
+      .navigation md-list-item.active {
+        background: #C8E4FF;
+      }
     </style>
   </head>
-  <body ng-app="disneylandCharts" ng-cloak>
-    <navigation></navigation>
-    
-
-    <!-- <div ng-controller="dummy">
-      <div class="container">
-        <nvd3 ng-if="chartData" options='chartOptions' data='chartData'></nvd3>
-      </div>
-    </div> -->
+  <body ng-app="disneylandCharts" ng-cloak layout="column">
+    <section layout="row" flex ng-controller="mainCtrl">
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+        <md-toolbar class="md-theme-indigo">
+          <h1 class="md-toolbar-tools">Wait Time Arbitrage</h1>
+        </md-toolbar>
+        <md-content>
+          <md-list class="navigation">
+            <md-list-item ng-click="go('deals')" md-ink-ripple ui-sref-active="active">
+              <a ui-sref="deals">Deals</a>
+            </md-list-item>
+            <md-list-item ng-click="go('waitTimes')" md-ink-ripple ui-sref-active="active">
+              <a ui-sref="waitTimes">Wait Times</a>
+            </md-list-item>
+            <md-list-item ng-click="go('administration')" md-ink-ripple ui-sref-active="active">
+              <a ui-sref="administration">Administration</a>
+            </md-list-item>
+          </md-list>
+        </md-content>
+      </md-sidenav>
+      <md-content flex>
+        <div>
+          <md-toolbar>
+            <h1 class="md-toolbar-tools">{{ title }}</h1>
+          </md-toolbar>
+        </div>
+        <div layout="column" layout-fill layout-align="top center" layout-padding>
+          <div ui-view="main"></div>
+        </div>
+        <div flex></div>
+      </md-content>
+    </section>
 
     <script class="application-dependency" src="/bower_components/angular/angular.js"></script>
     <script class="application-dependency" src="/bower_components/angular-animate/angular-animate.js"></script>
@@ -106,7 +134,5 @@
     <script class="application-src" src="src/views/waitTimes/waitTimes.controller.js"></script>
     <script class="application-src" src="src/views/administration/index.js"></script>
     <script class="application-src" src="src/views/administration/administration.controller.js"></script>
-
-    <script class="application-src" src="src/navigation/navigation.directive.js"></script>
   </body>
 </html>

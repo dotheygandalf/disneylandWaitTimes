@@ -5,7 +5,7 @@ var _ = require('lodash')
   , moment = require('moment');
 
 exports.index = function(req, res) {
-  Ride.find().select('-_id -__v').exec(function(error, rides) {
+  Ride.find().sort({name: 1}).select('-_id -__v').exec(function(error, rides) {
     res.status(200).json(rides);
   });
 };
