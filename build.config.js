@@ -1,6 +1,6 @@
 module.exports = {
   app: {
-    js: [ 'src/**/*.js' ],
+    js: [ 'client/src/**/*.js' ],
     html: [ 'client/src/**/*.html', '!client/src/index.html' ]
   },
   vendor: {
