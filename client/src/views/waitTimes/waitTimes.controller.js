@@ -60,7 +60,7 @@
                 return false;
               }
             }
-            return false;
+            return true;
           }).map(function(ride) {
             ride.data = _.map(ride.waitTimes, function(waitTime) {
               return {

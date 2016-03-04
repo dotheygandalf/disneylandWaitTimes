@@ -1,0 +1,6 @@
+<md-list>
+  <md-list-item ng-repeat="ride in rides" ng-click="rideInfo(ride.id)">
+    <p>{{ ride.name }}</p>
+    <md-button class="md-secondary" ng-click="rideInfo(ride.id)">More Info</md-button>
+  </md-list-item>
+</md-list>
