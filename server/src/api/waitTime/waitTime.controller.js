@@ -127,19 +127,31 @@ exports.optimalFastPass = function(req, res) {
 };
 
 exports.show = function(req, res) {
-  WaitTime.find({
-    id: req.params.id
-  }).select('-_id -__v').exec(function(error, waitTimes) {
-    if(error) {
-      return handleError(res, error);
-    }
+  var limit = req.query.limit || 100;
+  var offset = req.query.offset || 0;
+  WaitTime.count().exec(function(error, count) {
+    WaitTime.find({
+      id: req.params.id
+    }).sort({
+      date: 1
+    }).skip(offset).limit(limit).select('-_id -__v -park -id -name').exec(function(error, waitTimes) {
+      if(error) {
+        return handleError(res, error);
+      }
 
-    return res.status(200).json(waitTimes);
+      return res.status(200).json({
+        id: req.params.id,
+        count: count,
+        limit: limit,
+        offset: offset,
+        waitTimes: waitTimes
+      });
+    });
   });
 };
 
 
-exports.dailyAverage = function(req, res) {
+exports.dailyWaitTimes = function(req, res) {
   WaitTime.aggregate([{
     $match: {
       id: req.params.id,

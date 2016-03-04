@@ -43,7 +43,7 @@
         $scope.ride = response.data;
       });
 
-      var statsPromise = $http.get('/api/v1/waitTimes/rides/dailyAverage/' + $stateParams.id);
+      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id + '/days');
 
       statsPromise.then(function(response) {
         $scope.days = response.data;
