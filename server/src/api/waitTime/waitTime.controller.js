@@ -158,53 +158,154 @@ exports.dailyWaitTimes = function(req, res) {
       active: true
     }
   }, {
-      $project: {
-        id: '$id',
-        park: '$park',
-        name: '$name',
+    $project: {
+      id: '$id',
+      park: '$park',
+      name: '$name',
 
-        minutes: '$minutes',
-        date: '$date',
-        localTime: {
-            $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+      minutes: '$minutes',
+      date: '$date',
+      localTime: {
+          $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+      }
+    }
+  }, {
+    $sort: {
+        'localTime': 1
+    }
+  }, {
+    $group: {
+      _id: {
+        '$dayOfYear': '$localTime'
+      },
+      waitTimes: {
+        $push: {
+          date: '$date',
+          minutes: '$minutes'
+        }
+      },
+      average: {
+          $avg: '$minutes'
+      },
+      min: {
+          $min: '$minutes'
+      },
+      max: {
+          $max: '$minutes'
+      }
+    }
+  }, {
+    $sort: {
+      '_id': -1
+    }
+  }]).exec(function(error, waitTimes) {
+    if(error) {
+      return handleError(res, error);
+    }
+
+    return res.status(200).json(waitTimes);
+  });
+};
+
+exports.waitTimeAveragesByDayOfWeek = function(req, res) {
+  WaitTime.aggregate([{
+    $match: {
+      id: req.params.id,
+      active: true
+    }
+  }, {
+    $project: {
+      id: '$id',
+      park: '$park',
+      name: '$name',
+
+      minutes: '$minutes',
+      date: '$date',
+      localTime: {
+          $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+      },
+      dayOfWeek: {
+        $dayOfWeek: {
+          $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
         }
       }
-    }, {
-      $sort: {
-          'localTime': 1
+    }
+  }, {
+    $sort: {
+      localTime: 1
+    }
+  }, {
+    $group: {
+      _id: {
+        '$dayOfWeek': '$localTime'
+      },
+      average: {
+          $avg: '$minutes'
+      },
+      min: {
+          $min: '$minutes'
+      },
+      max: {
+          $max: '$minutes'
       }
-    }, {
-      $group: {
-        _id: {
-          '$dayOfYear': '$localTime'
-        },
-        waitTimes: {
-          $push: {
-            date: '$date',
-            minutes: '$minutes'
-          }
-        },
-        average: {
-            $avg: '$minutes'
-        },
-        min: {
-            $min: '$minutes'
-        },
-        max: {
-            $max: '$minutes'
-        }
-      }
-    }, {
-      $sort: {
-        '_id': -1
-      }
-    }]).exec(function(error, waitTimes) {
-      if(error) {
-        return handleError(res, error);
-      }
+    }
+  }]).exec(function(error, dayOfWeek) {
+    if(error) {
+      return handleError(res, error);
+    }
+    return res.status(200).json(_.find(dayOfWeek, function(day) {
+      return day._id == req.params.dayOfWeek;
+    }));
+  });
+};
 
-      return res.status(200).json(waitTimes);
-    });
+exports.allWaitTimeAveragesByDayOfWeek = function(req, res) {
+  WaitTime.aggregate([{
+    $match: {
+      id: req.params.id,
+      active: true
+    }
+  }, {
+    $project: {
+      id: '$id',
+      park: '$park',
+      name: '$name',
+
+      minutes: '$minutes',
+      date: '$date',
+      localTime: {
+          $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+      }
+    }
+  }, {
+    $sort: {
+      localTime: 1
+    }
+  }, {
+    $group: {
+      _id: {
+        '$dayOfWeek': '$localTime'
+      },
+      average: {
+          $avg: '$minutes'
+      },
+      min: {
+          $min: '$minutes'
+      },
+      max: {
+          $max: '$minutes'
+      }
+    }
+  }, {
+    $sort: {
+      _id: 1
+    }
+  }]).exec(function(error, dayOfWeek) {
+    if(error) {
+      return handleError(res, error);
+    }
+    return res.status(200).json(dayOfWeek);
+  });
 };
 
 function handleError(res, err, status) {

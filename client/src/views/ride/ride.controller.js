@@ -43,7 +43,11 @@
         $scope.ride = response.data;
       });
 
-      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id + '/days');
+      $http.get('/api/v1/waitTimes/rides/' + $stateParams.id + '/days').then(function(response) {
+        $scope.dailyAverages = response.data;
+      });
+
+      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id);
 
       statsPromise.then(function(response) {
         $scope.days = response.data;
@@ -85,6 +89,12 @@
     .filter('toDate', function() {
       return function(dayOfYear) {
         return moment().dayOfYear(dayOfYear).toDate();
+      };
+    })
+
+    .filter('dayOfWeek', function() {
+      return function(dayOfWeek) {
+        return moment().day(dayOfWeek).format('dddd');
       };
     });
 })();

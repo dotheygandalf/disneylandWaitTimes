@@ -2,6 +2,14 @@
   <md-progress-circular ng-if="!days" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
   <div ng-if="days">
     <h1>{{ ride.name }}</h1>
+    <div layout="row">
+        <div flex="auto" ng-repeat="day in dailyAverages">
+            <div>{{ day._id | dayOfWeek }}</div>
+            <div>Average: {{ day.average | number:0}}</div>
+            <div>Min: {{ day.min | number:0 }}</div>
+            <div>Max: {{ day.max | number:0}}</div>
+        </div>
+    </div>
     <calendar-md flex layout layout-fill
     calendar-direction="direction"
     on-prev-month="prevMonth"
