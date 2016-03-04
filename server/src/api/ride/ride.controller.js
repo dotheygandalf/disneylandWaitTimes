@@ -10,6 +10,19 @@ exports.index = function(req, res) {
   });
 };
 
+exports.show = function(req, res) {
+  Ride.findOne({
+    id: req.params.id
+  }).select('-_id -__v').exec(function(error, ride) {
+    if(error) {
+      return handleError(res, {
+        message: 'whoops'
+      }, 500);
+    }
+    return res.status(200).json(ride);
+  })
+};
+
 exports.update = function(req, res) {
   if(req.body) {
     Ride.update({
@@ -18,12 +31,12 @@ exports.update = function(req, res) {
       enabled: req.body.enabled
     }).exec(function(error) {
       if(error) {
-          return handleError(res, {
-            message: 'whoops'
-          }, 500);
-        }
-        return res.sendStatus(200);
-      });
+        return handleError(res, {
+          message: 'whoops'
+        }, 500);
+      }
+      return res.sendStatus(200);
+    });
   }
 };
 

@@ -39,6 +39,10 @@
         }
       };
 
+      $http.get('/api/v1/rides/' + $stateParams.id).then(function(response) {
+        $scope.ride = response.data;
+      });
+
       var statsPromise = $http.get('/api/v1/waitTimes/rides/dailyAverage/' + $stateParams.id);
 
       statsPromise.then(function(response) {
@@ -59,18 +63,18 @@
       });
 
       $scope.setDayContent = function(date) {
-        if(moment(date) > moment()) {
+        if(moment(date) > moment() || moment(date) <= moment('2-23-2016')) {
           return '';
         } else {
           var deferred = $q.defer();
           statsPromise.then(function(response) {
             $scope.days = response.data;
             if(_.find($scope.days, function(day) {
-                return day._id.dayOfYear === moment(date).dayOfYear();
+                return day._id === moment(date).dayOfYear();
               })) {
               deferred.resolve('active');
             } else {
-              deferred.resolve('no data');
+              deferred.resolve('Down');
             }
           });
           return deferred.promise;

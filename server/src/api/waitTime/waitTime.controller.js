@@ -163,28 +163,28 @@ exports.dailyAverage = function(req, res) {
       }
     }, {
       $group: {
-          _id: {
-              dayOfYear: {
-                  '$dayOfYear': '$localTime'
-              },
-              id: '$id',
-              name: '$name'
-          },
-          waitTimes: {
-            $push: {
-              date: '$date',
-              minutes: '$minutes'
-            }
-          },
-          average: {
-              $avg: '$minutes'
-          },
-          min: {
-              $min: '$minutes'
-          },
-          max: {
-              $max: '$minutes'
+        _id: {
+          '$dayOfYear': '$localTime'
+        },
+        waitTimes: {
+          $push: {
+            date: '$date',
+            minutes: '$minutes'
           }
+        },
+        average: {
+            $avg: '$minutes'
+        },
+        min: {
+            $min: '$minutes'
+        },
+        max: {
+            $max: '$minutes'
+        }
+      }
+    }, {
+      $sort: {
+        '_id': -1
       }
     }]).exec(function(error, waitTimes) {
       if(error) {
