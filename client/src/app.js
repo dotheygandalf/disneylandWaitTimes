@@ -6,7 +6,8 @@ angular.module('disneylandCharts', [
   'ngMaterial',
   'ngAnimate',
   'ngAria',
-  'nvd3'
+  'nvd3',
+  'materialCalendar'
 ])
 
 .config(function($urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider, $stateProvider) {
@@ -27,10 +28,9 @@ angular.module('disneylandCharts', [
     $mdSidenav('nav').toggle();
   };
 
-  $rootScope.$on('$stateChangeStart', 
-    function(event, toState, toParams, fromState, fromParams, options) {
-      if(toState.data) {
-        $scope.title = toState.data.title;
-      }
-    });
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+    if(toState.data) {
+      $scope.title = toState.data.title;
+    }
+  });
 });

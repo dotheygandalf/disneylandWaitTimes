@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('disneylandCharts')
-    .controller('rideCtrl', function($scope, $http, $stateParams) {
+    .controller('rideCtrl', function($scope, $http, $q, $stateParams) {
 
       $scope.chartOptions = {
         chart: {
@@ -39,12 +39,9 @@
         }
       };
 
-      $scope.chartData = function(waitTimes) {
-        
-      };
+      var statsPromise = $http.get('/api/v1/waitTimes/rides/dailyAverage/' + $stateParams.id);
 
-
-      $http.get('/api/v1/waitTimes/rides/dailyAverage/' + $stateParams.id).then(function(response) {
+      statsPromise.then(function(response) {
         $scope.days = response.data;
         $scope.days = _.map(response.data, function(day) {
           var values = _.map(day.waitTimes, function(waitTime) {
@@ -60,6 +57,25 @@
           return day;
         });
       });
+
+      $scope.setDayContent = function(date) {
+        if(moment(date) > moment()) {
+          return '';
+        } else {
+          var deferred = $q.defer();
+          statsPromise.then(function(response) {
+            $scope.days = response.data;
+            if(_.find($scope.days, function(day) {
+                return day._id.dayOfYear === moment(date).dayOfYear();
+              })) {
+              deferred.resolve('active');
+            } else {
+              deferred.resolve('no data');
+            }
+          });
+          return deferred.promise;
+        }
+      };
     })
 
     .filter('toDate', function() {

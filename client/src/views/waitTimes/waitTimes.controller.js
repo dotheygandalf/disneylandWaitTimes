@@ -23,7 +23,7 @@
             top: 20,
             bottom: 20,
             left: 20,
-            right: 45
+            right: 60
           },
           x: function(d, i){
             return moment(d.x).valueOf();
