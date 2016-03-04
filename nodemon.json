@@ -1,0 +1,8 @@
+{
+  "verbose": false,
+  "ignore": ["client/*", "bin/*", "queries/*"],
+  "execMap": {
+    "rb": "ruby",
+    "pde": "processing --sketch={{pwd}} --run"
+  }
+}
