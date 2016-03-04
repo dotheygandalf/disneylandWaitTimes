@@ -3,7 +3,6 @@
 
   angular.module('disneylandCharts')
     .controller('rideCtrl', function($scope, $http, $q, $stateParams) {
-
       $scope.chartOptions = {
         chart: {
           type: 'lineChart',
@@ -50,6 +49,25 @@
       var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id);
 
       statsPromise.then(function(response) {
+        var data = {};
+        _.each(response.data, function(day) {
+          var seconds = moment().dayOfYear(day._id).unix();
+          data[seconds] = Math.round(day.average);
+        });
+        $scope.heatmapConfig = {
+          start: moment().subtract(2, 'months').toDate(),
+          data: data,
+          domain: "month",
+          subDomain: 'x_day',
+          range: 3,
+          legend: [10, 30 , 60, 90, 120],
+          displayLegend: false,
+          tooltip: false,
+          itemName: ['minute', 'minutes']
+        };
+      });
+
+      statsPromise.then(function(response) {
         $scope.days = response.data;
         $scope.days = _.map(response.data, function(day) {
           var values = _.map(day.waitTimes, function(waitTime) {
@@ -65,25 +83,6 @@
           return day;
         });
       });
-
-      $scope.setDayContent = function(date) {
-        if(moment(date) > moment() || moment(date) <= moment('2-23-2016')) {
-          return '';
-        } else {
-          var deferred = $q.defer();
-          statsPromise.then(function(response) {
-            $scope.days = response.data;
-            if(_.find($scope.days, function(day) {
-                return day._id === moment(date).dayOfYear();
-              })) {
-              deferred.resolve('active');
-            } else {
-              deferred.resolve('Down');
-            }
-          });
-          return deferred.promise;
-        }
-      };
     })
 
     .filter('toDate', function() {
