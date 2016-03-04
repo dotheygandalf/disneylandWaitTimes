@@ -7,6 +7,7 @@ var router = express.Router();
 
 router.get('/rides', controller.index);
 router.get('/rides/optimal', controller.optimalFastPass);
+router.get('/rides/dailyAverage/:id', controller.dailyAverage);
 router.get('/rides/:id', controller.show);
 
 module.exports = router;

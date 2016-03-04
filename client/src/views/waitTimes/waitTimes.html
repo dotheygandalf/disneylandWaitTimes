@@ -7,7 +7,7 @@
           <md-icon class="md-avatar-icon" ng-style="activeState(ride.active)"></md-icon>
         </md-card-avatar>
         <md-card-header-text>
-          <span class="md-title">{{ ride.name }}</span>
+          <span class="md-title"><a ui-sref="ride({id: ride._id})">{{ ride.name }}</a></span>
           <span class="md-subhead">{{ ride.currentWaitTime }} minutes</span>
         </md-card-header-text>
       </md-card-header>

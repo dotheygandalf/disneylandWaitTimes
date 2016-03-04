@@ -1,0 +1,11 @@
+<div>
+  <ul>
+    <li ng-repeat="day in days">
+      <span>{{ day._id.dayOfYear | toDate | date: 'EEEE, MMMM d' }}</span>
+      <span>Average: {{ day.average | number:0}}</span>
+      <span>Min: {{ day.min | number:0 }}</span>
+      <span>Max: {{ day.max | number:0}}</span>
+      <nvd3 options="chartOptions" data="day.graph"></nvd3>
+    </li>
+  </ul>
+</div>

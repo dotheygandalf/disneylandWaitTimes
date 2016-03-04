@@ -138,6 +138,63 @@ exports.show = function(req, res) {
   });
 };
 
+
+exports.dailyAverage = function(req, res) {
+  WaitTime.aggregate([{
+    $match: {
+      id: req.params.id,
+      active: true
+    }
+  }, {
+      $project: {
+        id: '$id',
+        park: '$park',
+        name: '$name',
+
+        minutes: '$minutes',
+        date: '$date',
+        localTime: {
+            $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+        }
+      }
+    }, {
+      $sort: {
+          'localTime': 1
+      }
+    }, {
+      $group: {
+          _id: {
+              dayOfYear: {
+                  '$dayOfYear': '$localTime'
+              },
+              id: '$id',
+              name: '$name'
+          },
+          waitTimes: {
+            $push: {
+              date: '$date',
+              minutes: '$minutes'
+            }
+          },
+          average: {
+              $avg: '$minutes'
+          },
+          min: {
+              $min: '$minutes'
+          },
+          max: {
+              $max: '$minutes'
+          }
+      }
+    }]).exec(function(error, waitTimes) {
+      if(error) {
+        return handleError(res, error);
+      }
+
+      return res.status(200).json(waitTimes);
+    });
+};
+
 function handleError(res, err, status) {
   return res.status(status || 500).json(err);
 }
