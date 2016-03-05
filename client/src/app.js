@@ -6,9 +6,7 @@ angular.module('disneylandCharts', [
   'ngMaterial',
   'ngAnimate',
   'ngAria',
-  'nvd3',
-  'materialCalendar',
-  'calHeatmap'
+  'nvd3'
 ])
 
 .config(function($urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider, $stateProvider) {
