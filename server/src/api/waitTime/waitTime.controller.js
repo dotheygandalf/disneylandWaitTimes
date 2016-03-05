@@ -152,6 +152,38 @@ exports.show = function(req, res) {
 
 
 exports.dailyWaitTimes = function(req, res) {
+  var groupBy = {};
+  var groupByQuery = req.query.groupBy;
+  if(groupByQuery === 'hour') {
+    groupBy.dayOfYear = {
+      $dayOfYear:  '$localTime'
+    };
+    groupBy.year = {
+      $year:  '$localTime'
+    };
+    groupBy.hour = {
+      $hour: '$localTime'
+    };
+  } else if(groupByQuery === 'day') {
+    groupBy.dayOfYear = {
+      $dayOfYear:  '$localTime'
+    };
+    groupBy.year = {
+      $year:  '$localTime'
+    };
+  } else if(groupByQuery === 'month') {
+    groupBy.dayOfYear = {
+      $month:  '$localTime'
+    };
+    groupBy.year = {
+      $year:  '$localTime'
+    };
+  } else if(groupByQuery === undefined || groupByQuery === 'year') {
+    groupBy.year = {
+      $year:  '$localTime'
+    };
+  }
+
   WaitTime.aggregate([{
     $match: {
       id: req.params.id,
@@ -162,7 +194,6 @@ exports.dailyWaitTimes = function(req, res) {
       id: '$id',
       park: '$park',
       name: '$name',
-
       minutes: '$minutes',
       date: '$date',
       localTime: {
@@ -175,9 +206,7 @@ exports.dailyWaitTimes = function(req, res) {
     }
   }, {
     $group: {
-      _id: {
-        '$dayOfYear': '$localTime'
-      },
+      _id: groupBy,
       waitTimes: {
         $push: {
           date: '$date',

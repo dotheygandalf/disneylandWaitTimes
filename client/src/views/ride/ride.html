@@ -1,6 +1,6 @@
 <div>
-  <md-progress-circular ng-if="!days" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
-  <div ng-if="days">
+  <md-progress-circular ng-if="!days && !heatMapData" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
+  <div ng-if="days && heatMapData">
     <h1>{{ ride.name }}</h1>
 
     <cal-heatmap config="heatmapConfig"></cal-heatmap>
@@ -15,7 +15,7 @@
     </div>
     <ul>
       <li ng-repeat="day in days">
-        <span>{{ day._id | toDate | date: 'EEEE, MMMM d' }}</span>
+        <span>{{ day._id.dayOfYear | toDate | date: 'EEEE, MMMM d' }}</span>
         <span>Average: {{ day.average | number:0}}</span>
         <span>Min: {{ day.min | number:0 }}</span>
         <span>Max: {{ day.max | number:0}}</span>

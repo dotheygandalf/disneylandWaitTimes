@@ -46,20 +46,31 @@
         $scope.dailyAverages = response.data;
       });
 
-      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id);
+      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id, {
+        params: {
+          groupBy: 'day'
+        }
+      });
 
-      statsPromise.then(function(response) {
+      $http.get('/api/v1/waitTimes/rides/' + $stateParams.id, {
+        params: {
+          groupBy: 'hour'
+        }
+      }).then(function(response) {
         var data = {};
         _.each(response.data, function(day) {
-          var seconds = moment().dayOfYear(day._id).unix();
-          data[seconds] = Math.round(day.average);
+          var id = day._id;
+          var seconds = moment().year(id.year).dayOfYear(id.dayOfYear).hour(id.hour).unix();
+          data[seconds] = Math.round(day.average); 
         });
+        $scope.heatMapData = true;
         $scope.heatmapConfig = {
-          start: moment().subtract(2, 'months').toDate(),
+          start: moment().subtract(6, 'days').toDate(),
           data: data,
-          domain: "month",
-          subDomain: 'x_day',
-          range: 3,
+          domain: "day",
+          subDomain: 'hour',
+          subDomainTextFormat: '%H',
+          range: 7,
           legend: [30 , 60, 90, 120],
           displayLegend: false,
           tooltip: false,
