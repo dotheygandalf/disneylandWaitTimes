@@ -308,6 +308,61 @@ exports.allWaitTimeAveragesByDayOfWeek = function(req, res) {
   });
 };
 
+exports.averageParkWaitTime = function(req, res) {
+  Ride.find({
+    enabled: true
+  }).select('id').exec(function(error, rides) {
+    WaitTime.aggregate([{
+      $match: {
+        active: true,
+        id: {
+          $in: _.map(rides, 'id')
+        }
+      }
+    }, {
+      $project: {
+        id: '$id',
+        park: '$park',
+        name: '$name',
+
+        minutes: '$minutes',
+        date: '$date',
+        localTime: {
+            $subtract: [ '$date', 8 * 60 * 60 * 1000] //convert to pacific time
+        }
+      }
+    }, {
+      $sort: {
+        localTime: 1
+      }
+    }, {
+      $group: {
+        _id: {
+          $dayOfYear: '$localTime'
+        },
+        average: {
+            $avg: '$minutes'
+        },
+        min: {
+            $min: '$minutes'
+        },
+        max: {
+            $max: '$minutes'
+        }
+      }
+    }, {
+      $sort: {
+        _id: 1
+      }
+    }]).exec(function(error, dayOfWeek) {
+      if(error) {
+        return handleError(res, error);
+      }
+      return res.status(200).json(dayOfWeek);
+    });
+  });
+};
+
 function handleError(res, err, status) {
   return res.status(status || 500).json(err);
 }

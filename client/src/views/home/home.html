@@ -6,4 +6,5 @@
     <h2>California Adventure Hours</h2>
     <h3>{{californiaAdventureHours.openingTime | date: 'h:mm a'}} - {{californiaAdventureHours.closingTime | date: 'h:mm a'}}</h3>
   </div>
+  <cal-heatmap ng-if="parkAverage" config="heatmapConfig" style=" margin: auto;display: block;width: 190px;"></cal-heatmap>
 </div>
