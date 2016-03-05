@@ -10,7 +10,8 @@
       };
 
       $http.get('/api/v1/waitTimes/rides/summary').then(function(response) {
-        _.each(response.data, function(ride) {
+        var rides = _.sortBy(response.data, 'name');
+        _.each(rides, function(ride) {
           var data = {};
           _.each(ride.waitTimes, function(waitTime) {
             var id = waitTime._id;
@@ -30,7 +31,7 @@
             itemName: ['minute', 'minutes']
           };
         });
-        $scope.rides = response.data;
+        $scope.rides = rides;
       });
     });
 })();
