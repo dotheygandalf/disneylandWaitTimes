@@ -1,8 +1,11 @@
 <md-card ng-repeat="ride in rides" ng-if="rides">
   <md-card-header>
     <md-card-header-text>
-      <h3 class="md-title"><a ui-sref="ride({id: ride.id})">{{ ride.name }}</a></h3>
+      <span class="md-title">{{ ride.name }}</span>
     </md-card-header-text>
   </md-card-header>
   <cal-heatmap config="ride.heatmapConfig" style="display: block;margin: 0 auto;"></cal-heatmap>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button ng-click="rideInfo(ride.id)">More Info</md-button>
+  </md-card-actions>
 </md-card>
