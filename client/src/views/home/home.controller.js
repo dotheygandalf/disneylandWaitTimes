@@ -16,7 +16,7 @@
           domain: "month",
           subDomain: 'x_day',
           range: 1,
-          legend: [10, 30 , 60, 90, 120],
+          legend: [30 , 60, 90, 120],
           displayLegend: false,
           tooltip: false,
           itemName: ['minute', 'minutes']

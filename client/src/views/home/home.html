@@ -1,6 +1,6 @@
 <div class="container">
-  <md-progress-circular ng-if="!disneylandHours || !californiaAdventureHours" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
-  <div style="text-align: center;" ng-if="disneylandHours && californiaAdventureHours">
+  <md-progress-circular ng-if="!disneylandHours || !californiaAdventureHours || !parkAverage" md-mode="indeterminate" md-diameter="120" style="margin: 0 auto;"></md-progress-circular>
+  <div style="text-align: center;" ng-if="disneylandHours && californiaAdventureHours && parkAverage">
     <h2>Disneyland Hours</h2>
     <h3>{{disneylandHours.openingTime | date: 'h:mm a'}} - {{disneylandHours.closingTime | date: 'h:mm a'}}</h3>
     <h2>California Adventure Hours</h2>
