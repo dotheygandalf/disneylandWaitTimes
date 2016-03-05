@@ -1,5 +1,8 @@
-<md-list>
-  <md-list-item ng-repeat="ride in rides" ng-click="rideInfo(ride.id)">
-    <p>{{ ride.name }}</p>
-  </md-list-item>
-</md-list>
+<md-card ng-repeat="ride in rides" ng-if="rides">
+  <md-card-header>
+    <md-card-header-text>
+      <h3 class="md-title"><a ui-sref="ride({id: ride.id})">{{ ride.name }}</a></h3>
+    </md-card-header-text>
+  </md-card-header>
+  <cal-heatmap config="ride.heatmapConfig" style="display: block;margin: 0 auto;"></cal-heatmap>
+</md-card>

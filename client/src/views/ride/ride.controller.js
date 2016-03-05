@@ -45,13 +45,7 @@
       $http.get('/api/v1/waitTimes/rides/' + $stateParams.id + '/days').then(function(response) {
         $scope.dailyAverages = response.data;
       });
-
-      var statsPromise = $http.get('/api/v1/waitTimes/rides/' + $stateParams.id, {
-        params: {
-          groupBy: 'day'
-        }
-      });
-
+      
       $http.get('/api/v1/waitTimes/rides/' + $stateParams.id, {
         params: {
           groupBy: 'hour'
@@ -76,23 +70,6 @@
           tooltip: false,
           itemName: ['minute', 'minutes']
         };
-      });
-
-      statsPromise.then(function(response) {
-        $scope.days = response.data;
-        $scope.days = _.map(response.data, function(day) {
-          var values = _.map(day.waitTimes, function(waitTime) {
-            return {
-              x: moment(waitTime.date).toDate(),
-              y: waitTime.minutes
-            };
-          });
-          day.graph = [{
-            key: 'Wait Time',
-            values: values
-          }];
-          return day;
-        });
       });
     })
 

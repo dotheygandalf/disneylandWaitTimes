@@ -9,7 +9,27 @@
         });
       };
 
-      $http.get('/api/v1/rides').then(function(response) {
+      $http.get('/api/v1/waitTimes/rides/summary').then(function(response) {
+        _.each(response.data, function(ride) {
+          var data = {};
+          _.each(ride.waitTimes, function(waitTime) {
+            var id = waitTime._id;
+            var seconds = moment().year(id.year).dayOfYear(id.dayOfYear).hour(id.hour).unix();
+            data[seconds] = Math.round(waitTime.average); 
+          });
+          ride.heatmapConfig = {
+            start: moment().subtract(6, 'days').toDate(),
+            data: data,
+            domain: "day",
+            subDomain: 'hour',
+            subDomainTextFormat: '%H',
+            range: 7,
+            legend: [30 , 60, 90, 120],
+            displayLegend: false,
+            tooltip: false,
+            itemName: ['minute', 'minutes']
+          };
+        });
         $scope.rides = response.data;
       });
     });

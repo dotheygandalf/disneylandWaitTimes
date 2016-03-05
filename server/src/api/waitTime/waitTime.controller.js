@@ -3,7 +3,8 @@
 var WaitTime = require('./waitTime.model')
   , Ride = require('../ride/ride.model')
   , moment = require('moment')
-  , _ = require('lodash');
+  , _ = require('lodash')
+  , q = require('q');
 
 exports.index = function(req, res) {
   Ride.find({
@@ -150,10 +151,9 @@ exports.show = function(req, res) {
   });
 };
 
-
-exports.dailyWaitTimes = function(req, res) {
+function waitTimesByRide(id, groupByQuery) {
+  var deferred = q.defer();
   var groupBy = {};
-  var groupByQuery = req.query.groupBy;
   if(groupByQuery === 'hour') {
     groupBy.dayOfYear = {
       $dayOfYear:  '$localTime'
@@ -186,7 +186,7 @@ exports.dailyWaitTimes = function(req, res) {
 
   WaitTime.aggregate([{
     $match: {
-      id: req.params.id,
+      id: id,
       active: true
     }
   }, {
@@ -225,14 +225,44 @@ exports.dailyWaitTimes = function(req, res) {
     }
   }, {
     $sort: {
-      '_id': -1
+      '_id.year': -1,
+      '_id.dayOfYear': -1
     }
   }]).exec(function(error, waitTimes) {
     if(error) {
-      return handleError(res, error);
+      return deferred.reject(error);
     }
+    return deferred.resolve(waitTimes);
+  });
+  return deferred.promise;
+}
 
+exports.dailyWaitTimes = function(req, res) {
+  waitTimesByRide(req.params.id, req.query.groupBy).then(function(waitTimes) {
     return res.status(200).json(waitTimes);
+  }, function(error) {
+    return handleError(res, error);
+  });
+};
+
+exports.ridesWithWaitTimes = function(req, res) {
+  Ride.find({
+    enabled: true
+  }).exec(function(error, rides) {
+    var promises = _.map(rides, function(ride) {
+      var deferred = q.defer();
+      waitTimesByRide(ride.id, 'hour').then(function(waitTimes) {
+        return deferred.resolve({
+          id: ride.id,
+          name: ride.name,
+          waitTimes: waitTimes
+        });
+      });
+      return deferred.promise;
+    });
+    q.all(promises).then(function(rides) {
+      return res.status(200).json(rides);
+    });
   });
 };
 
