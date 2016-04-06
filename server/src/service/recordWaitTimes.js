@@ -26,6 +26,7 @@ function getData(parkAPI, parkId) {
 	console.log('Check time at:' + moment().tz('America/Los_Angeles').format('ddd, h:mmA'));
 	checkDate(parkAPI, parkId).then(function(operationalHours) {
 		console.log('hours received');
+		console.log(JSON.stringify(operationalHours, null, 2));
 		var range = moment.range(moment(operationalHours.openingTime).tz('America/Los_Angeles'), moment(operationalHours.closingTime).tz('America/Los_Angeles'));
 		if(range.contains(moment().tz('America/Los_Angeles'))) {
 			console.log('Within park operating hours');
@@ -48,8 +49,8 @@ function checkDate(parkAPI, parkId) {
 	OperationalHours.findOne({
 		park: parkId,
 		date: {
-      $gte: moment().tz('America/Los_Angeles').startOf('day'),
-      $lt: moment().tz('America/Los_Angeles').endOf('day')
+      $gte: moment().tz('America/Los_Angeles').startOf('day').toDate(),
+      $lt: moment().tz('America/Los_Angeles').endOf('day').toDate()
 		}
 	}, function(err, operationalHours) {
 		if(err) {
@@ -67,7 +68,7 @@ function checkDate(parkAPI, parkId) {
 				_.each(data, function(day) {
 					OperationalHours.create({
 						park: parkId,
-						date: moment(day.date).toDate(),
+						date: moment(day.date).tz('America/Los_Angeles').toDate(),
 						openingTime: moment(day.openingTime).toDate(),
 						closingTime: moment(day.closingTime).toDate()
 					}, function(err, operationalHours) {
