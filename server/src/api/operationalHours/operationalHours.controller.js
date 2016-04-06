@@ -34,7 +34,7 @@ exports.index = function(req, res) {
 
 exports.todaysHours = function(req, res) {
   OperationalHours.find({
-    date: moment().tz('America/Los_Angeles').startOf('day')
+    date: moment().tz('America/Los_Angeles').startOf('day').toDate()
   }).exec(function(error, operationalHours) {
     if(error) {
         return handleError(res, error);

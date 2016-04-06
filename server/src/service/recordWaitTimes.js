@@ -60,26 +60,26 @@ function checkDate(parkAPI, parkId) {
 			deferred.resolve(operationalHours);
 		} else {
 			parkAPI.GetOpeningTimes(function(err, data) {
-					if (err) {
-						deferred.reject();
-						return console.error("Error fetching Magic Kingdom schedule: " + err);
-					}
-					_.each(data, function(day) {
-						OperationalHours.create({
-							park: parkId,
-							date: moment(day.date).toDate(),
-							openingTime: moment(day.openingTime).toDate(),
-							closingTime: moment(day.closingTime).toDate()
-						}, function(err, operationalHours) {
-							if(err) {
-								deferred.reject(err);
-								return;
-							}
-							if(moment().tz('America/Los_Angeles').dayOfYear() === moment(operationalHours.date).tz('America/Los_Angeles').dayOfYear()) {
-								deferred.resolve(operationalHours);
-							}
-						});
+				if (err) {
+					deferred.reject();
+					return console.error("Error fetching Magic Kingdom schedule: " + err);
+				}
+				_.each(data, function(day) {
+					OperationalHours.create({
+						park: parkId,
+						date: moment(day.date).toDate(),
+						openingTime: moment(day.openingTime).toDate(),
+						closingTime: moment(day.closingTime).toDate()
+					}, function(err, operationalHours) {
+						if(err) {
+							deferred.reject(err);
+							return;
+						}
+						if(moment().tz('America/Los_Angeles').dayOfYear() === moment(operationalHours.date).tz('America/Los_Angeles').dayOfYear()) {
+							deferred.resolve(operationalHours);
+						}
 					});
+				});
 			});
 		}
 	});
