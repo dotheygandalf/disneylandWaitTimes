@@ -48,8 +48,8 @@ function checkDate(parkAPI, parkId) {
 	OperationalHours.findOne({
 		park: parkId,
 		date: {
-			$gte: moment().tz('America/Los_Angeles').startOf('day').toDate(),
-			$lte: moment().tz('America/Los_Angeles').endOf('day').toDate()
+      $gte: moment().tz('America/Los_Angeles').startOf('day'),
+      $lt: moment().tz('America/Los_Angeles').endOf('day')
 		}
 	}, function(err, operationalHours) {
 		if(err) {
